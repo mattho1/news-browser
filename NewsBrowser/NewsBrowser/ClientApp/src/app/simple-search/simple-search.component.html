@@ -1,0 +1,31 @@
+<h1 id="tableLabel">Simple search</h1>
+
+<form (ngSubmit)="searchNews()" #searchForm="ngForm" class="full-width">
+  <mat-form-field class="search-width">
+    <input matInput
+           placeholder="Search"
+           [formControl]="searchQuery"/>
+  </mat-form-field>
+  <button type="submit"S
+          mat-button
+          [disabled]="!searchForm.form.valid">
+    Szukaj
+  </button>
+</form>
+
+<p *ngIf="!newses"><em>Loading...</em></p>
+
+<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="newses">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Text</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let news of newses">
+      <td>{{ news.title }}</td>
+      <td>{{ news.text }}</td>
+    </tr>
+  </tbody>
+</table>

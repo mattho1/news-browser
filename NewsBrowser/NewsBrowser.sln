@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30011.22
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewsBrowser", "NewsBrowser\NewsBrowser.csproj", "{59DD1FCC-226F-4CBC-9F29-ADA2E5664A76}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Backend", "Backend\Backend.csproj", "{F136FC20-74F8-43D5-8E82-DF3C9D6F96EE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{59DD1FCC-226F-4CBC-9F29-ADA2E5664A76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59DD1FCC-226F-4CBC-9F29-ADA2E5664A76}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59DD1FCC-226F-4CBC-9F29-ADA2E5664A76}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59DD1FCC-226F-4CBC-9F29-ADA2E5664A76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F136FC20-74F8-43D5-8E82-DF3C9D6F96EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F136FC20-74F8-43D5-8E82-DF3C9D6F96EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F136FC20-74F8-43D5-8E82-DF3C9D6F96EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F136FC20-74F8-43D5-8E82-DF3C9D6F96EE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {98346362-5EC9-4685-B503-09E29FD51E67}
+	EndGlobalSection
+EndGlobal
