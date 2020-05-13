@@ -1,20 +1,29 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { SimpleNews } from '../models/SimpleNews';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-simple-search',
   templateUrl: './simple-search.component.html',
   styleUrls: ['./simple-search.component.css']
 })
-export class SimpleSearchComponent {
+export class SimpleSearchComponent implements OnInit {
   displayedColumns = ['title', 'author', 'text', 'tags'];
   newses: SimpleNews[];
   searchQuery = new FormControl('', []);
   page: number;
 
-  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) {
+  constructor(private route: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) {
+  }
+
+  ngOnInit() {
+    const sq = this.route.snapshot.paramMap.get('searchQuery');
+    if (sq != null) {
+      this.searchQuery.setValue(sq);
+      this.searchNews();
+    }
   }
 
   searchNews() {
@@ -25,3 +34,4 @@ export class SimpleSearchComponent {
     }, error => console.error(error));
   }
 }
+

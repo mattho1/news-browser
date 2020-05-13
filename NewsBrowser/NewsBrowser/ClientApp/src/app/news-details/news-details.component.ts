@@ -19,11 +19,9 @@ export class NewsDetailsComponent implements OnInit {
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('newsId');
-    //this.loading = true;
     this.http.get<NewsDetails>(this.baseUrl + "news/" + id).subscribe(result => {
       this.news = result;
       this.news.imageUrl = (result.imageUrl == null || result.imageUrl == "") ? "assets/defaultPhoto/defaultNews.png" : result.imageUrl ;
-      //this.loading = false;
     }, error => console.error(error));
   }
 }

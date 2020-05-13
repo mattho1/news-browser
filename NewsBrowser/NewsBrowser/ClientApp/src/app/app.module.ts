@@ -35,10 +35,11 @@ import { NewsDetailsComponent } from './news-details/news-details.component';
     MatCardModule,
     BrowserAnimationsModule,
     RouterModule.forRoot([
-      { path: '', component: HomeComponent, pathMatch: 'full' },
+      { path: '', component: SimpleSearchComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
       { path: 'simple-search', component: SimpleSearchComponent },
+      { path: 'simple-search/:searchQuery', component: SimpleSearchComponent },
       { path: 'news-details/:newsId', component: NewsDetailsComponent },
     ])
   ],

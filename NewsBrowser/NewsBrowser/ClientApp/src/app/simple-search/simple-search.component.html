@@ -34,7 +34,7 @@
       <td mat-cell *matCellDef="let element"> 
         <mat-form-field class="chips-tags">
           <mat-chip-list #chipList>
-            <mat-chip *ngFor="let tag of element.tags">
+            <mat-chip *ngFor="let tag of element.tags" [routerLink]="['/simple-search/', tag]">
               {{tag}}
             </mat-chip>
           </mat-chip-list>
