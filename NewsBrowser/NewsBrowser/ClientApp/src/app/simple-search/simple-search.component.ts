@@ -1,6 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { SimpleNews } from '../models/SimpleNews';
 
 @Component({
   selector: 'app-simple-search',
@@ -8,7 +9,8 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./simple-search.component.css']
 })
 export class SimpleSearchComponent {
-  newses: News[];
+  displayedColumns = ['title', 'author', 'text', 'tags'];
+  newses: SimpleNews[];
   searchQuery = new FormControl('', []);
   page: number;
 
@@ -18,13 +20,8 @@ export class SimpleSearchComponent {
   searchNews() {
     this.page = 1;
     this.newses = [];
-    this.http.get<News[]>(this.baseUrl + 'news/simple/' + this.searchQuery.value).subscribe(result => {
+    this.http.get<SimpleNews[]>(this.baseUrl + 'news/simple/' + this.searchQuery.value).subscribe(result => {
       this.newses = result;
     }, error => console.error(error));
   }
-}
-
-interface News {
-  title: string;
-  text: number;
 }

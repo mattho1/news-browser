@@ -1,8 +1,11 @@
-﻿using Backend.Models;
+﻿using Backend.DTOs;
+using Backend.Helpers;
+using Backend.Models;
 using Backend.Repositories.Abstract;
 using Backend.Services.Abstract;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Backend.Services.Concrete
@@ -16,16 +19,15 @@ namespace Backend.Services.Concrete
             _newsRepository = newsRepository;
         }
 
-        public News GetNews(string newsId)
+        public NewsDetails GetNews(string newsId)
         {
             var news = _newsRepository.Get(newsId);
-            return news;
+            return DTOMapper.GetNewsDetails(news);
         }
 
-        public IEnumerable<News> SimpleSearchNews(string searchQuery, int page)
+        public IEnumerable<SimpleNews> SimpleSearchNews(string searchQuery, int page)
         {
-            var news = _newsRepository.SimpleSearch(searchQuery, page);
-            return news;
+            return _newsRepository.SimpleSearch(searchQuery, page).Select(n => DTOMapper.GetSimpleNews(n)).ToList();
         }
     }
 }

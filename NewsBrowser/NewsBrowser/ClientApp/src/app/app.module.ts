@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { MatButtonModule, MatInputModule } from '@angular/material';
+import { MatButtonModule, MatInputModule, MatTableModule, MatChipsModule, MatCardModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -11,6 +11,7 @@ import { HomeComponent } from './home/home.component';
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { SimpleSearchComponent } from './simple-search/simple-search.component';
+import { NewsDetailsComponent } from './news-details/news-details.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { SimpleSearchComponent } from './simple-search/simple-search.component';
     CounterComponent,
     FetchDataComponent,
     SimpleSearchComponent,
+    NewsDetailsComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -28,12 +30,16 @@ import { SimpleSearchComponent } from './simple-search/simple-search.component';
     ReactiveFormsModule,
     MatButtonModule,
     MatInputModule,
+    MatTableModule,
+    MatChipsModule,
+    MatCardModule,
     BrowserAnimationsModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
       { path: 'simple-search', component: SimpleSearchComponent },
+      { path: 'news-details/:newsId', component: NewsDetailsComponent },
     ])
   ],
   providers: [],

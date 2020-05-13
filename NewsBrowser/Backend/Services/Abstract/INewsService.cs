@@ -1,4 +1,5 @@
-﻿using Backend.Models;
+﻿using Backend.DTOs;
+using Backend.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,8 +9,8 @@ namespace Backend.Services.Abstract
 {
     public interface INewsService
     {
-        News GetNews(string newsId);
+        NewsDetails GetNews(string newsId);
         //bool CreateNews(News news);
-        IEnumerable<News> SimpleSearchNews(string searchQuery, int page);
+        IEnumerable<SimpleNews> SimpleSearchNews(string searchQuery, int page);
     }
 }

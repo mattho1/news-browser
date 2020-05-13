@@ -1,0 +1,32 @@
+body {
+}
+
+.details-card {
+  margin-left: 5%;
+  margin-right: 5%;
+  text-align: center;
+}
+
+.tags {
+  width: 100%;
+}
+
+.mat-card-header {
+  width: 100%;
+  justify-content: center;
+}
+
+.mat-card-title {
+  width: 100%;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.mat-card-subtitle {
+  justify-content: center;
+}
+
+img {
+  max-height: 500px;
+  max-width: 60%;
+}

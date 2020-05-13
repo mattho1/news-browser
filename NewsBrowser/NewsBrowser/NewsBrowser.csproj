@@ -21,21 +21,34 @@
   <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
     <Compile Remove="ClientApp\src\app\fetch-data - kopiować\**" />
+    <Compile Remove="ClientApp\src\assets\photos\**" />
     <Content Remove="$(SpaRoot)**" />
     <Content Remove="ClientApp\src\app\fetch-data - kopiować\**" />
+    <Content Remove="ClientApp\src\assets\photos\**" />
     <EmbeddedResource Remove="ClientApp\src\app\fetch-data - kopiować\**" />
+    <EmbeddedResource Remove="ClientApp\src\assets\photos\**" />
     <None Remove="$(SpaRoot)**" />
     <None Remove="ClientApp\src\app\fetch-data - kopiować\**" />
+    <None Remove="ClientApp\src\assets\photos\**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
 
   <ItemGroup>
     <None Remove="ClientApp\src\app\fetch-data - kopiować\fetch-data.component.html" />
     <None Remove="ClientApp\src\app\fetch-data - kopiować\fetch-data.component.ts" />
+    <None Remove="ClientApp\src\app\models\NewsDetails.ts" />
+    <None Remove="ClientApp\src\app\models\SimpleNews.ts" />
+    <None Remove="ClientApp\src\app\news-details\news-details.component.ts" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Backend\Backend.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\models\newsDetails.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\models\simpleNews.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\news-details\news-details.component.ts" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

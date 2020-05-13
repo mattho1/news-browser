@@ -1,7 +1,44 @@
 .search-width {
-  width: 70%;
+  width: 85%;
 }
 
 .full-width {
-  width: 70%;
+  width: 100%;
+}
+
+.example-container {
+  height: 800px;
+  overflow: auto;
+}
+
+table {
+  width: 100%;
+}
+
+.mat-column-title {
+  width: 10%;
+}
+
+.mat-column-author {
+  width: 7%;
+  text-align: center;
+}
+
+.mat-column-text {
+  width: 68%;
+}
+
+.mat-column-tags {
+  width: 15%;
+}
+
+.mat-raised-button{
+    margin-left: 15px;
+    width: 10%;
+}
+
+.mat-header-cell {
+  text-align: center;
+  font-weight: bold;
+  font-size: 16px;
 }
