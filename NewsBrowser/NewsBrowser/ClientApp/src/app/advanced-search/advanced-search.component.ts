@@ -7,16 +7,17 @@ import { SimpleNews } from '../models/SimpleNews';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-simple-search',
-  templateUrl: './simple-search.component.html',
-  styleUrls: ['./simple-search.component.css']
+  selector: 'app-advanced-search',
+  templateUrl: './advanced-search.component.html',
+  styleUrls: ['./advanced-search.component.css']
 })
-export class SimpleSearchComponent implements OnInit {
+export class AdvancedSearchComponent implements OnInit {
   displayedColumns = ['title', 'author', 'text', 'tags'];
   newses: SimpleNews[];
   searchQuery = new FormControl('', []);
   dataSource = new MatTableDataSource<SimpleNews>();
   page: number;
+  selectedType: string;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
@@ -25,12 +26,30 @@ export class SimpleSearchComponent implements OnInit {
 
   ngOnInit() {
     this.dataSource.paginator = this.paginator;
+    const ft = this.route.snapshot.paramMap.get('fieldType');
     const sq = this.route.snapshot.paramMap.get('searchQuery');
+    if (ft != null && this.fieldTypes.includes(ft.toLowerCase())) {
+        this.selectedType = ft;
+    }
+    else {
+      this.selectedType = this.fieldTypes[0];
+    }
+
     if (sq != null) {
       this.searchQuery.setValue(sq);
       this.searchNews();
     }
   }
+
+  searchNews() {
+    this.page = 1;
+    this.http.get<SimpleNews[]>(this.baseUrl + 'news/advanced/' + this.selectedType + '/' + this.searchQuery.value).subscribe(result => {
+      this.dataSource = new MatTableDataSource<SimpleNews>(result);
+      this.dataSource.paginator = this.paginator;
+    }, error => console.error(error));
+  }
+
+  fieldTypes: string[] = ['all', 'title', 'author', 'content', 'tag'];
 
   chipColor(tagType: number) {
     if (tagType == 1) {
@@ -43,14 +62,6 @@ export class SimpleSearchComponent implements OnInit {
       return 'theme';
     }
     return 'basic';
-  }
-
-  searchNews() {
-    this.page = 1;
-    this.http.get<SimpleNews[]>(this.baseUrl + 'news/simple/' + this.searchQuery.value).subscribe(result => {
-      this.dataSource = new MatTableDataSource<SimpleNews>(result);
-      this.dataSource.paginator = this.paginator;
-    }, error => console.error(error));
   }
 }
 

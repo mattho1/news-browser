@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { MatButtonModule, MatInputModule, MatTableModule, MatChipsModule, MatCardModule } from '@angular/material';
+import { MatButtonModule, MatInputModule, MatTableModule, MatChipsModule, MatCardModule, MatPaginatorModule, MatSelectModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -12,6 +12,7 @@ import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { SimpleSearchComponent } from './simple-search/simple-search.component';
 import { NewsDetailsComponent } from './news-details/news-details.component';
+import { AdvancedSearchComponent } from './advanced-search/advanced-search.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { NewsDetailsComponent } from './news-details/news-details.component';
     FetchDataComponent,
     SimpleSearchComponent,
     NewsDetailsComponent,
+    AdvancedSearchComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -33,9 +35,13 @@ import { NewsDetailsComponent } from './news-details/news-details.component';
     MatTableModule,
     MatChipsModule,
     MatCardModule,
+    MatPaginatorModule,
+    MatSelectModule,
     BrowserAnimationsModule,
     RouterModule.forRoot([
       { path: '', component: SimpleSearchComponent, pathMatch: 'full' },
+      { path: 'advanced-search', component: AdvancedSearchComponent }, 
+      { path: 'advanced-search/:fieldType/:searchQuery', component: AdvancedSearchComponent}, 
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
       { path: 'simple-search', component: SimpleSearchComponent },

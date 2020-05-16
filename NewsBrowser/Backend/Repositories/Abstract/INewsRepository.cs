@@ -10,5 +10,7 @@ namespace Backend.Repositories.Abstract
         News Get(string id);
         //void Add(News news);
         IEnumerable<News> SimpleSearch(string searchQuery, int page);
+        IEnumerable<News> SearchByField(string searchQuery, string fieldName, int page);
+        IEnumerable<News> SearchByFields(string searchQuery, List<string> fieldsName, int page);
     }
 }

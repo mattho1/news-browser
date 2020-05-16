@@ -6,8 +6,8 @@
   <mat-card-content>
     <mat-form-field class="tags">
       <mat-chip-list>
-        <mat-chip *ngFor="let tag of news.tags" [routerLink]="['/simple-search/', tag]">
-          {{tag}}
+        <mat-chip *ngFor="let tag of news.tags" [color]="chipColor(tag.type)"  [routerLink]="['/advanced-search/tag/', tag.name]" selected>
+          {{tag.name}}
         </mat-chip>
       </mat-chip-list>
     </mat-form-field>

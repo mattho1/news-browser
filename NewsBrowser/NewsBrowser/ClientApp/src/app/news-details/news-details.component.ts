@@ -17,6 +17,19 @@ export class NewsDetailsComponent implements OnInit {
     this.news = EMPTY_NEWS_DETAILS;
   }
 
+  chipColor(tagType: number) {
+    if (tagType == 1) {
+      return 'primary';
+    } else if (tagType == 2) {
+      return 'accent';
+    } else if (tagType == 3) {
+      return 'warn';
+    } else if (tagType == 4) {
+      return 'theme';
+    }
+    return 'basic';
+  }
+
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('newsId');
     this.http.get<NewsDetails>(this.baseUrl + "news/" + id).subscribe(result => {

@@ -35,6 +35,13 @@ namespace NewsBrowser.Controllers
             var news = _newsService.SimpleSearchNews(searchPhrase, page);
             return Ok(news);
         }
+        
+        [HttpGet("advanced/{fieldName}/{searchPhrase}", Name = "SearchByField")]
+        public IActionResult SearchByField(string fieldName, string searchPhrase, int page = 1)
+        {
+            var news = _newsService.SearchByField(searchPhrase, fieldName, page);
+            return Ok(news);
+        }
 
         // TEST
         public IEnumerable<SimpleNews> Get()

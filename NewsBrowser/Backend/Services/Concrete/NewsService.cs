@@ -29,5 +29,20 @@ namespace Backend.Services.Concrete
         {
             return _newsRepository.SimpleSearch(searchQuery, page).Select(n => DTOMapper.GetSimpleNews(n)).ToList();
         }
+
+
+        public IEnumerable<SimpleNews> SearchByField(string searchQuery, string fieldName, int page)
+        {
+            fieldName = fieldName.ToLower();
+            if (fieldName.Equals("all"))
+                return _newsRepository.SimpleSearch(searchQuery, page).Select(n => DTOMapper.GetSimpleNews(n)).ToList();
+            else if (fieldName.Equals("tag"))
+            {
+                var fieldsName = new List<string>() { "thread.site", "entities.persons.name", "entities.locations.name", "entities.organizations.name" };
+                return _newsRepository.SearchByFields(searchQuery, fieldsName, page).Select(n => DTOMapper.GetSimpleNews(n)).ToList();
+            }
+            else
+                return _newsRepository.SearchByField(searchQuery, fieldName, page).Select(n => DTOMapper.GetSimpleNews(n)).ToList();
+        }
     }
 }

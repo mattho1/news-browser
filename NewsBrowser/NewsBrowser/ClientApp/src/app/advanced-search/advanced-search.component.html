@@ -1,10 +1,18 @@
-<h1 id="tableLabel">Simple search</h1>
+<h1 id="tableLabel">Advanced search</h1>
 
 <form (ngSubmit)="searchNews()" #searchForm="ngForm" id="full-width">
+  <mat-form-field id="field-type-selection-width">
+    <mat-label>Field type</mat-label>
+    <mat-select [(ngModel)]="selectedType" name="type">
+      <mat-option *ngFor="let fieldType of fieldTypes" [value]="fieldType">
+        {{fieldType}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
   <mat-form-field id="search-width">
     <input matInput
            placeholder="Search"
-           [formControl]="searchQuery"/>
+           [formControl]="searchQuery" />
   </mat-form-field>
   <button mat-raised-button color="primary">
     Search

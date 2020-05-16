@@ -12,5 +12,6 @@ namespace Backend.Services.Abstract
         NewsDetails GetNews(string newsId);
         //bool CreateNews(News news);
         IEnumerable<SimpleNews> SimpleSearchNews(string searchQuery, int page);
+        IEnumerable<SimpleNews> SearchByField(string searchQuery, string fieldName, int page);
     }
 }
