@@ -1,0 +1,67 @@
+<form (ngSubmit)="searchNews()" #searchForm="ngForm" id="full-width">
+  <div id="selection-type">
+    <mat-form-field id="query-type-selection">
+      <mat-label class="title-selection">Query type</mat-label>
+      <mat-select [(ngModel)]="selectedQueryType" name="typeQuery">
+        <mat-option *ngFor="let queryType of queryTypes" [value]="queryType">
+          {{queryType}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field id="field-type-selection">
+      <mat-label class="title-selection">Field type</mat-label>
+      <mat-select [(ngModel)]="selectedFieldType" name="type">
+        <mat-option *ngFor="let fieldType of fieldTypes" [value]="fieldType">
+          {{fieldType}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div id="search-div">
+    <mat-form-field id="search-width">
+      <input id="search-input"
+             matInput
+             placeholder="Search"
+             [formControl]="searchQuery" />
+    </mat-form-field>
+    <button mat-raised-button color="primary" id="search-button-content">
+      Search
+    </button>
+  </div>
+</form>
+
+<div class="example-container mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource">
+
+    <ng-container matColumnDef="title">
+      <th mat-header-cell *matHeaderCellDef> Title </th>
+      <td mat-cell *matCellDef="let element"> {{element.title}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="author">
+      <th mat-header-cell *matHeaderCellDef> Author </th>
+      <td mat-cell *matCellDef="let element"> {{element.author}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="text">
+      <th mat-header-cell *matHeaderCellDef> Content </th>
+      <td mat-cell *matCellDef="let element"> {{element.text}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="tags">
+      <th mat-header-cell *matHeaderCellDef> Tags </th>
+      <td mat-cell *matCellDef="let element">
+        <mat-form-field >
+          <mat-chip-list aria-label="Color selection">
+            <mat-chip *ngFor="let tag of element.tags" [color]="chipColor(tag.type)" [routerLink]="['/advanced-search/tag/', tag.name]" selected="true">
+              {{tag.name}}
+            </mat-chip>
+          </mat-chip-list>
+        </mat-form-field>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" [routerLink]="['/news-details/', row.id]"></tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons></mat-paginator>
+</div>

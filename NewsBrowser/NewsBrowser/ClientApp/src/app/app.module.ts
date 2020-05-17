@@ -13,6 +13,7 @@ import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { SimpleSearchComponent } from './simple-search/simple-search.component';
 import { NewsDetailsComponent } from './news-details/news-details.component';
 import { AdvancedSearchComponent } from './advanced-search/advanced-search.component';
+import { CombinationSearchComponent } from './combination-search/combination-search.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { AdvancedSearchComponent } from './advanced-search/advanced-search.compo
     SimpleSearchComponent,
     NewsDetailsComponent,
     AdvancedSearchComponent,
+    CombinationSearchComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -41,7 +43,9 @@ import { AdvancedSearchComponent } from './advanced-search/advanced-search.compo
     RouterModule.forRoot([
       { path: '', component: SimpleSearchComponent, pathMatch: 'full' },
       { path: 'advanced-search', component: AdvancedSearchComponent }, 
-      { path: 'advanced-search/:fieldType/:searchQuery', component: AdvancedSearchComponent}, 
+      { path: 'advanced-search/:fieldType/:searchQuery', component: AdvancedSearchComponent },
+      { path: 'combination-search', component: CombinationSearchComponent },
+      { path: 'combination-search/:fieldType/:searchQuery', component: CombinationSearchComponent },
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
       { path: 'simple-search', component: SimpleSearchComponent },

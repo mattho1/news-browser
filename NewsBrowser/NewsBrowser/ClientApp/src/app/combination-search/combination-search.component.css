@@ -1,0 +1,85 @@
+#full-width {
+  width: 100%;
+}
+
+#query-type-selection {
+  margin-left: 10px;
+  margin-right: 20px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+#field-type-selection {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.title-selection {
+  font-size: 16px;
+  padding-top: 3px;
+  font-weight: bold;
+  color: black;
+}
+
+#selection-type {
+  width: 20%;
+  border-radius: 10px;
+  background-color: lightgray;
+  display: inline-block;
+  margin-right: 10px;
+  border: 1px solid black;
+}
+
+#search-div {
+  width: 75%;
+  display: inline-block;
+}
+
+#search-width {
+  width: 85%;
+}
+
+#search-input{
+    font-size:20px;
+}
+
+.example-container {
+  height: 80%;
+  overflow: auto;
+}
+
+table {
+  width: 100%;
+}
+
+.mat-column-title {
+  width: 10%;
+}
+
+.mat-column-author {
+  width: 7%;
+  text-align: center;
+}
+
+.mat-column-text {
+  width: 68%;
+}
+
+.mat-column-tags {
+  width: 15%;
+}
+
+.mat-raised-button{
+    margin-left: 15px;
+    width: 10%;
+}
+
+.mat-header-cell {
+  text-align: center;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+#search-button-content {
+  font-size: 24px;
+}

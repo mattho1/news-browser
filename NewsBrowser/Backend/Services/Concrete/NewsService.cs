@@ -3,6 +3,7 @@ using Backend.Helpers;
 using Backend.Models;
 using Backend.Repositories.Abstract;
 using Backend.Services.Abstract;
+using Nest;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,15 +35,58 @@ namespace Backend.Services.Concrete
         public IEnumerable<SimpleNews> SearchByField(string searchQuery, string fieldName, int page)
         {
             fieldName = fieldName.ToLower();
+
+            if (fieldName.Equals("content"))
+                fieldName = "text";
+
             if (fieldName.Equals("all"))
                 return _newsRepository.SimpleSearch(searchQuery, page).Select(n => DTOMapper.GetSimpleNews(n)).ToList();
             else if (fieldName.Equals("tag"))
             {
-                var fieldsName = new List<string>() { "thread.site", "entities.persons.name", "entities.locations.name", "entities.organizations.name" };
+                var fieldsName = new List<string>() { "thread.site", "entities.persons.name", "entities.locations.name", "entities.organizations.name" }; 
                 return _newsRepository.SearchByFields(searchQuery, fieldsName, page).Select(n => DTOMapper.GetSimpleNews(n)).ToList();
             }
             else
                 return _newsRepository.SearchByField(searchQuery, fieldName, page).Select(n => DTOMapper.GetSimpleNews(n)).ToList();
+        }
+
+        public IEnumerable<SimpleNews> CombinationSearch(string queryType, string fieldName, string searchQuery, int page)
+        {
+            fieldName = fieldName.ToLower();
+            queryType = queryType.ToLower();
+
+            if (fieldName.Equals("content"))
+                fieldName = "text";
+
+            if (fieldName.Equals("all"))
+            {
+                if (queryType.Equals("fuzzy"))
+                    return _newsRepository.FuzzySearchByAllFields(searchQuery, page).Select(n => DTOMapper.GetSimpleNews(n)).ToList();
+                else if(queryType.Equals("synonyms"))
+                    return _newsRepository.SynonymsSearchByAllFields(searchQuery, page).Select(n => DTOMapper.GetSimpleNews(n)).ToList();
+                else
+                    return _newsRepository.SimpleSearch(searchQuery, page).Select(n => DTOMapper.GetSimpleNews(n)).ToList();
+            }
+            else if (fieldName.Equals("tag"))
+            {
+                var fieldsName = new List<string>() { "thread.site", "entities.persons.name", "entities.locations.name", "entities.organizations.name" };
+
+                if (queryType.Equals("fuzzy"))
+                    return _newsRepository.FuzzySearchByFields(searchQuery, fieldsName, page).Select(n => DTOMapper.GetSimpleNews(n)).ToList();
+                else if (queryType.Equals("synonyms"))
+                    return _newsRepository.SynonymsSearchByFields(searchQuery, fieldsName, page).Select(n => DTOMapper.GetSimpleNews(n)).ToList();
+                else
+                    return _newsRepository.SearchByFields(searchQuery, fieldsName, page).Select(n => DTOMapper.GetSimpleNews(n)).ToList();
+            }
+            else
+            {
+                if (queryType.Equals("fuzzy"))
+                    return _newsRepository.FuzzySearchByFields(searchQuery, new List<string>() { fieldName }, page).Select(n => DTOMapper.GetSimpleNews(n)).ToList();
+                else if (queryType.Equals("synonyms"))
+                    return _newsRepository.SynonymsSearchByFields(searchQuery, new List<string>() { fieldName }, page).Select(n => DTOMapper.GetSimpleNews(n)).ToList();
+                else
+                    return _newsRepository.SearchByField(searchQuery, fieldName, page).Select(n => DTOMapper.GetSimpleNews(n)).ToList();
+            }
         }
     }
 }

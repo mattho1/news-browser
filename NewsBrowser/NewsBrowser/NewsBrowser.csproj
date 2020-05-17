@@ -37,6 +37,7 @@
     <None Remove="ClientApp\src\app\fetch-data - kopiować\fetch-data.component.html" />
     <None Remove="ClientApp\src\app\fetch-data - kopiować\fetch-data.component.ts" />
     <None Remove="ClientApp\src\app\models\NewsDetails.ts" />
+    <None Remove="ClientApp\src\app\models\queryParameters.ts" />
     <None Remove="ClientApp\src\app\models\SimpleNews.ts" />
     <None Remove="ClientApp\src\app\models\tag.ts" />
     <None Remove="ClientApp\src\app\news-details\news-details.component.ts" />
@@ -48,6 +49,9 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\app\models\newsDetails.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\models\queryParameters.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="ClientApp\src\app\models\tag.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
