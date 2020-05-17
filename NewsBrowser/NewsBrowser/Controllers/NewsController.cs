@@ -18,7 +18,8 @@ namespace NewsBrowser.Controllers
         private readonly ISemanticService _semanticService;
         private readonly IEmailService _emailService;
 
-        public NewsController(INewsService newsService, ISemanticService semanticService)
+        public NewsController(INewsService newsService,
+            ISemanticService semanticService, IEmailService emailService)
         {
             _newsService = newsService;
             _semanticService = semanticService;
