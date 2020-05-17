@@ -28,5 +28,9 @@ body {
 
 img {
   max-height: 500px;
-  max-width: 60%;
+}
+
+a {
+  font-size: 14px;
+  justify-content: center;
 }

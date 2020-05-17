@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Backend.DTOs;
 using Backend.Models;
 using Backend.Services.Abstract;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace NewsBrowser.Controllers
@@ -15,11 +16,13 @@ namespace NewsBrowser.Controllers
     {
         private readonly INewsService _newsService;
         private readonly ISemanticService _semanticService;
+        private readonly IEmailService _emailService;
 
         public NewsController(INewsService newsService, ISemanticService semanticService)
         {
             _newsService = newsService;
             _semanticService = semanticService;
+            _emailService = emailService;
         }
 
         // GET: News/1
@@ -59,11 +62,34 @@ namespace NewsBrowser.Controllers
             return Ok(simQry);
         }
 
+        [HttpGet("advanced/{fieldName}/{searchPhrase}", Name = "SearchByField")]
+        public IActionResult SearchByField(string fieldName, string searchPhrase, int page = 1)
+        {
+            var news = _newsService.SearchByField(searchPhrase, fieldName, page);
+            return Ok(news);
+        }
+
+        [HttpGet("combination", Name = "CombinationSearch")]
+        public IActionResult CombinationSearch(string queryType, string fieldType, string queryContent, int page = 1)
+        {
+            var news = _newsService.CombinationSearch(queryType, fieldType, queryContent,  page);
+            return Ok(news);
+        }
+
         // TEST
         public IEnumerable<SimpleNews> Get()
         {
             var news = _newsService.SimpleSearchNews("test", 1);
             return news;
+        }
+
+        // TEST
+        [HttpGet("addedNews/{idNews}", Name = "TestAddedAndSubscribe")]
+        public IActionResult GetTest(string idNews)
+        {
+            var news = _newsService.SimpleSearchNewsTEST(idNews);
+            _newsService.CreateNews(news);
+            return Ok();
         }
     }
 }

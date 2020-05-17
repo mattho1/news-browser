@@ -20,3 +20,9 @@ html {
 nav {
   background-color: #3f51b5;
 }
+
+.bold-separator {
+  padding-left: 10px;
+  padding-right: 10px;
+  font-weight: bold;
+}

@@ -2,8 +2,13 @@
   width: 100%;
 }
 
+#field-type-selection-width {
+  width: 10%;
+  margin-right: 10px;
+}
+
 #search-width {
-  width: 85%;
+  width: 75%;
 }
 
 .example-container {
@@ -41,8 +46,4 @@ table {
   text-align: center;
   font-weight: bold;
   font-size: 16px;
-}
-
-#subscribe-button{
-    padding-left:10px;
 }

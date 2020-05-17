@@ -18,7 +18,7 @@ namespace Backend.Helpers
                 Author = news?.Author,
                 Title = string.IsNullOrEmpty(news?.Title) ? news?.Thread?.FullTitle : news.Title,
                 Text = news?.Text?.Length > 500 ? news?.Text?.Substring(0, 500) + "..." : news?.Text ?? string.Empty,
-                Tags = CreateTags(news?.Entities).Take(5).ToList(),
+                Tags = CreateTags(news).Take(5).ToList(),
             };
         }
 
@@ -31,7 +31,7 @@ namespace Backend.Helpers
                 Author = news?.Author,
                 Title = string.IsNullOrEmpty(news?.Title) ? news?.Thread?.FullTitle : news.Title,
                 Text = news?.Text ?? string.Empty,
-                Tags = CreateTags(news?.Entities).ToList(),
+                Tags = CreateTags(news).ToList(),
                 ImageUrl = news?.Thread?.ImageUrl,
                 Language = news?.Language,
                 SiteSection = news?.Thread?.SiteSection,
@@ -39,15 +39,18 @@ namespace Backend.Helpers
             };
         }
 
-        private static List<string> CreateTags(Entity entity)
+        private static List<DTOs.Tag> CreateTags(News news)
         {
-            var tags = new List<string>();
-            if (entity == null)
+            var tags = new List<DTOs.Tag>();
+            if (news == null)
                 return tags;
 
-            tags.AddRange(entity.Persons.Select(l => l.Name));
-            tags.AddRange(entity.Organizations.Select(l => l.Name));
-            tags.AddRange(entity.Locations.Select(l => l.Name));
+            if(!string.IsNullOrEmpty(news?.Thread?.SiteSection))
+                tags.Add(new DTOs.Tag() { Name = news.Thread.Site, Type = 1 });
+            
+            tags.AddRange(news.Entities.Persons.Select(l => new DTOs.Tag() { Name = l.Name, Type = 2 }));
+            tags.AddRange(news.Entities.Organizations.Select(l => new DTOs.Tag() { Name = l.Name, Type = 3 }));
+            tags.AddRange(news.Entities.Locations.Select(l => new DTOs.Tag() { Name = l.Name, Type = 4 }));
 
             return tags;
         }

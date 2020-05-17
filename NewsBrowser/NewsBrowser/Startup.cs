@@ -1,3 +1,5 @@
+using Backend.Helpers;
+using Backend.Models;
 using Backend.Repositories.Abstract;
 using Backend.Repositories.Concrete;
 using Backend.Services.Abstract;
@@ -29,15 +31,39 @@ namespace NewsBrowser
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddControllersWithViews();
+            services.AddHttpContextAccessor();
 
             var esClientSettings = new ConnectionSettings(new Uri(Configuration["Elasticsearch:Url"]))
                                 .DefaultIndex(Configuration["Elasticsearch:Index"])
                                 .ThrowExceptions();
 
-            services.AddSingleton<IElasticClient>(new ElasticClient(esClientSettings));
+            var esClient = new ElasticClient(esClientSettings);
+
+            var requestExistIndex = new IndexExistsRequest("subscribers");
+
+            if (!esClient.Indices.Exists(requestExistIndex).Exists)
+            {
+                var settings = new IndexSettings { NumberOfReplicas = 0, NumberOfShards = 1 };
+                var indexConfig = new IndexState { Settings = settings };
+                esClient.Indices.Create("subscribers", c => c
+                    .InitializeUsing(indexConfig)
+                    .Map<Subscriber>(mp => mp.AutoMap()));
+            }
+
+            var emailConfig = Configuration
+                .GetSection("EmailConfiguration")
+                .Get<EmailConfig>();
+
+            services.AddSingleton<IElasticClient>(esClient);
+            services.AddSingleton(emailConfig);
 
             services.AddScoped<INewsRepository, NewsRepository>();
             services.AddScoped<INewsService, NewsService>();
+
+            services.AddScoped<ISubscribeRepository, SubscribeRepository>();
+            services.AddScoped<ISubscribeService, SubscribeService>();
+            services.AddScoped<IEmailSender, EmailSender>();
+            services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<ISemanticService, SemanticService>();
 
             // In production, the Angular files will be served from this directory

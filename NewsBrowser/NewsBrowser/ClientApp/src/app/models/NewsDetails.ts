@@ -1,10 +1,12 @@
+import { Tag } from "./tag";
+
 export interface NewsDetails {
   id: string;
   url: string;
   title: string;
   author: string;
   text: string;
-  tags: string[];
+  tags: Tag[];
   imageUrl: string;
   language: string;
   siteSection: string;
