@@ -2,7 +2,7 @@ import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormControl } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { SimpleNews } from '../models/SimpleNews';
 import { ActivatedRoute } from '@angular/router';
 
@@ -51,6 +51,14 @@ export class SimpleSearchComponent implements OnInit {
       this.dataSource = new MatTableDataSource<SimpleNews>(result);
       this.dataSource.paginator = this.paginator;
     }, error => console.error(error));
+  }
+
+  subscribeQuery() {
+    let params = new HttpParams();
+    params = params.append('email', "cezar235711@gmail.com");
+    params = params.append('subscribeQuery', this.searchQuery.value);
+
+    this.http.get<SimpleNews[]>(this.baseUrl + 'subscriber/subscribe', { params: params }).subscribe(_ => {}, error => console.error(error));
   }
 }
 

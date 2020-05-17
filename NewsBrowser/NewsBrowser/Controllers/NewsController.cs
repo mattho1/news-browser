@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Backend.DTOs;
 using Backend.Models;
 using Backend.Services.Abstract;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace NewsBrowser.Controllers
@@ -14,10 +15,12 @@ namespace NewsBrowser.Controllers
     public class NewsController : ControllerBase
     {
         private readonly INewsService _newsService;
+        private readonly IEmailService _emailService;
 
-        public NewsController(INewsService newsService)
+        public NewsController(INewsService newsService, IEmailService emailService)
         {
             _newsService = newsService;
+            _emailService = emailService;
         }
 
         // GET: News/1
@@ -55,6 +58,15 @@ namespace NewsBrowser.Controllers
         {
             var news = _newsService.SimpleSearchNews("test", 1);
             return news;
+        }
+
+        // TEST
+        [HttpGet("addedNews/{idNews}", Name = "TestAddedAndSubscribe")]
+        public IActionResult GetTest(string idNews)
+        {
+            var news = _newsService.SimpleSearchNewsTEST(idNews);
+            _newsService.CreateNews(news);
+            return Ok();
         }
     }
 }

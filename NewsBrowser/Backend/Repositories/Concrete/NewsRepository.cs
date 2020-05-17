@@ -156,8 +156,7 @@ namespace Backend.Repositories.Concrete
                     .Fields(f => f.Fields(fieldsName.ToArray()))
                     .Query(searchQuery)
                     .Type(typeQuery)
-                ))
-            .Must(m => m
+                ) && m
                 .MatchPhrase(mp => mp
                     .Field(f => f.Thread.Site)
                     .Query(siteFilter)))))
@@ -166,10 +165,26 @@ namespace Backend.Repositories.Concrete
             return searchResponse.Documents;
         }
 
-        public void AddCommentTmp()
+        public string AddNews(News news)
         {
-            var tmp = new Models.Tag() { Name = "test", Sentiment = "test test test"};
-            _elasticClient.Index(tmp, i => i);
+            return _elasticClient.Index<News>(news, i => i).Id;
+        }
+
+        public string CheckExistNews(string searchQuery, string idNews)
+        {
+            return _elasticClient.Search<News>(s => s
+                    .Query(q => q
+                        .Bool(b => b
+                            .Must(m => m
+                                .QueryString(qs => qs
+                                    .Query(searchQuery)
+                                    .Type(TextQueryType.Phrase)
+                                    .DefaultOperator(Operator.And)
+                                ) && m
+                                .MatchPhrase(t => t
+                                    .Field("_id")
+                                    .Query(idNews)))
+                                    )))?.Documents.FirstOrDefault()?.Id;
         }
     }
 }

@@ -14,10 +14,12 @@ namespace Backend.Services.Concrete
     public class NewsService : INewsService
     {
         private readonly INewsRepository _newsRepository;
+        private readonly ISubscribeService _subscribeService;
 
-        public NewsService(INewsRepository newsRepository)
+        public NewsService(INewsRepository newsRepository, ISubscribeService subscribeService)
         {
             _newsRepository = newsRepository;
+            _subscribeService = subscribeService;
         }
 
         public NewsDetails GetNews(string newsId)
@@ -31,6 +33,10 @@ namespace Backend.Services.Concrete
             return _newsRepository.SimpleSearch(searchQuery, page).Select(n => DTOMapper.GetSimpleNews(n)).ToList();
         }
 
+        public News SimpleSearchNewsTEST(string searchQuery)
+        {
+            return _newsRepository.Get(searchQuery);
+        }
 
         public IEnumerable<SimpleNews> SearchByField(string searchQuery, string fieldName, int page)
         {
@@ -87,6 +93,12 @@ namespace Backend.Services.Concrete
                 else
                     return _newsRepository.SearchByField(searchQuery, fieldName, page).Select(n => DTOMapper.GetSimpleNews(n)).ToList();
             }
+        }
+
+        void INewsService.CreateNews(News news)
+        {
+            var idNewNews = _newsRepository.AddNews(news);
+            _subscribeService.AddedNewNews(idNewNews);
         }
     }
 }
