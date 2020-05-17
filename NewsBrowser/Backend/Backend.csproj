@@ -9,4 +9,9 @@
     <PackageReference Include="NEST" Version="7.6.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Satsuma">
+      <HintPath>bin/Debug/netcoreapp3.1/Satsuma.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>

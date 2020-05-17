@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
+
+  <!-- property keys -->
+  <key id="key0" for="edge" attr.name="label" attr.type="string" />
+  <key id="key1" for="node" attr.name="label" attr.type="string" />
+  <key id="key2" for="node" attr.name="lod_url" attr.type="string" />
+
+  <graph id="G" edgedefault="directed" parse.nodeids="canonical" parse.edgeids="canonical" parse.order="nodesfirst">
+
+   <!-- graph properties -->
+
+   <!-- vertices -->
+    <node id="n0">
+      <data key="key1">Analityka</data>
+    </node>
+    <node id="n1">
+      <data key="key1">Dane</data>
+    </node>
+    <node id="n2">
+      <data key="key1">Informatyka</data>
+    </node>
+    <node id="n3">
+      <data key="key1">Algorytmika</data>
+    </node>
+    <node id="n4">
+      <data key="key1">Genomika</data>
+    </node>
+    <node id="n5">
+      <data key="key1">Biologia</data>
+    </node>
+    <node id="n6">
+      <data key="key1">Bioinformatyka</data>
+    </node>
+    <node id="n7">
+      <data key="key1">Oprogramowanie</data>
+    </node>
+    <node id="n8">
+      <data key="key1">Oprogramowanie bioinformatyczne</data>
+    </node>
+
+   <!-- edges -->
+    <edge id="e0" source="n1" target="n0">
+      <data key="key0">broader</data>
+    </edge>
+    <edge id="e1" source="n1" target="n2">
+      <data key="key0">broader</data>
+    </edge>
+    <edge id="e2" source="n3" target="n2">
+      <data key="key0">broader</data>
+    </edge>
+    <edge id="e3" source="n4" target="n3">
+      <data key="key0">broader</data>
+    </edge>
+    <edge id="e4" source="n4" target="n5">
+      <data key="key0">broader</data>
+    </edge>
+    <edge id="e5" source="n6" target="n2">
+      <data key="key0">broader</data>
+    </edge>
+    <edge id="e6" source="n7" target="n6">
+      <data key="key0">broader</data>
+    </edge>
+    <edge id="e7" source="n8" target="n6">
+      <data key="key0">broader</data>
+    </edge>
+    <edge id="e8" source="n8" target="n7">
+      <data key="key0">broader</data>
+    </edge>
+
+  </graph>
+</graphml>

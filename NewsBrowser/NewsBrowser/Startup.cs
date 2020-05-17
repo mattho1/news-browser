@@ -38,6 +38,7 @@ namespace NewsBrowser
 
             services.AddScoped<INewsRepository, NewsRepository>();
             services.AddScoped<INewsService, NewsService>();
+            services.AddScoped<ISemanticService, SemanticService>();
 
             // In production, the Angular files will be served from this directory
 
