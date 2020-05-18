@@ -39,7 +39,7 @@ namespace NewsBrowser
 
             var esClient = new ElasticClient(esClientSettings);
 
-            var requestExistIndex = new IndexExistsRequest("subscribers");            
+            var requestExistIndex = new IndexExistsRequest("subscribers");
 
             if (!esClient.Indices.Exists(requestExistIndex).Exists)
             {
@@ -59,10 +59,12 @@ namespace NewsBrowser
 
             services.AddScoped<INewsRepository, NewsRepository>();
             services.AddScoped<INewsService, NewsService>();
+
             services.AddScoped<ISubscribeRepository, SubscribeRepository>();
             services.AddScoped<ISubscribeService, SubscribeService>();
             services.AddScoped<IEmailSender, EmailSender>();
             services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<ISemanticService, SemanticService>();
 
             // In production, the Angular files will be served from this directory
 

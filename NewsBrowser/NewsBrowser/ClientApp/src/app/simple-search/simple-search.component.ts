@@ -16,6 +16,9 @@ import { MatIconRegistry } from '@angular/material/icon';
 export class SimpleSearchComponent implements OnInit {
   displayedColumns = ['title', 'author', 'text', 'tags'];
   newses: SimpleNews[];
+  broaderQuery: String[];
+  narowerQuery: String[];
+  relatedQuery: String[];
   searchQuery = new FormControl('', []);
   dataSource = new MatTableDataSource<SimpleNews>();
   page: number;
@@ -49,11 +52,40 @@ export class SimpleSearchComponent implements OnInit {
     return 'basic';
   }
 
+  submitSearch() {
+    this.searchNews();
+    this.searchBroaderQuery();
+    this.searchNarrowerQuery();
+    this.searchRelatedQuery();
+  }
+
   searchNews() {
     this.page = 1;
     this.http.get<SimpleNews[]>(this.baseUrl + 'news/simple/' + this.searchQuery.value).subscribe(result => {
       this.dataSource = new MatTableDataSource<SimpleNews>(result);
       this.dataSource.paginator = this.paginator;
+    }, error => console.error(error));
+  }
+
+
+  searchBroaderQuery() {
+    this.broaderQuery = [];
+    this.http.get<String[]>(this.baseUrl + 'news/broaderQuery/' + this.searchQuery.value).subscribe(result => {
+      this.broaderQuery = result;
+    }, error => console.error(error));
+  }
+
+  searchNarrowerQuery() {
+    this.narowerQuery = [];
+    this.http.get<String[]>(this.baseUrl + 'news/narrowerQuery/' + this.searchQuery.value).subscribe(result => {
+      this.narowerQuery = result;
+    }, error => console.error(error));
+  }
+
+  searchRelatedQuery() {
+    this.relatedQuery = [];
+    this.http.get<String[]>(this.baseUrl + 'news/relatedQuery/' + this.searchQuery.value).subscribe(result => {
+      this.relatedQuery = result;
     }, error => console.error(error));
   }
 
@@ -65,4 +97,3 @@ export class SimpleSearchComponent implements OnInit {
     this.http.get<SimpleNews[]>(this.baseUrl + 'subscriber/subscribe', { params: params }).subscribe(_ => {}, error => console.error(error));
   }
 }
-

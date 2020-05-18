@@ -15,11 +15,14 @@ namespace NewsBrowser.Controllers
     public class NewsController : ControllerBase
     {
         private readonly INewsService _newsService;
+        private readonly ISemanticService _semanticService;
         private readonly IEmailService _emailService;
 
-        public NewsController(INewsService newsService, IEmailService emailService)
+        public NewsController(INewsService newsService,
+            ISemanticService semanticService, IEmailService emailService)
         {
             _newsService = newsService;
+            _semanticService = semanticService;
             _emailService = emailService;
         }
 
@@ -37,6 +40,27 @@ namespace NewsBrowser.Controllers
         {
             var news = _newsService.SimpleSearchNews(searchPhrase, page);
             return Ok(news);
+        }
+
+        [HttpGet("broaderQuery/{searchPhrase}", Name = "BroaderQuery")]
+        public IActionResult BroaderQuery(string searchPhrase)
+        {
+            var simQry = _semanticService.GetBroaderConcepts(searchPhrase);
+            return Ok(simQry);
+        }
+
+        [HttpGet("narrowerQuery/{searchPhrase}", Name = "NarrowerQuery")]
+        public IActionResult NarrowerQuery(string searchPhrase)
+        {
+            var simQry = _semanticService.GetNarrowerConcepts(searchPhrase);
+            return Ok(simQry);
+        }
+
+        [HttpGet("relatedQuery/{searchPhrase}", Name = "RelatedQuery")]
+        public IActionResult RelatedQuery(string searchPhrase)
+        {
+            var simQry = _semanticService.GetRelatedConcepts(searchPhrase);
+            return Ok(simQry);
         }
 
         [HttpGet("advanced/{fieldName}/{searchPhrase}", Name = "SearchByField")]

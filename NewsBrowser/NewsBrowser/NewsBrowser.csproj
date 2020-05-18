@@ -48,6 +48,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="Satsuma">
+      <HintPath>bin/Debug/netcoreapp3.1/Satsuma.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\app\models\newsDetails.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\queryParameters.ts">
       <SubType>Code</SubType>

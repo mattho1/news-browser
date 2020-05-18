@@ -1,7 +1,7 @@
 <h1 id="tableLabel">Simple search</h1>
 
-<form (ngSubmit)="searchNews()" #searchForm="ngForm" id="full-width">
-  <mat-form-field id="search-width">
+<form (ngSubmit)="submitSearch()" #searchForm="ngForm" class="full-width">
+  <mat-form-field class="search-width">
     <input matInput
            placeholder="Search"
            [formControl]="searchQuery" />
@@ -13,7 +13,24 @@
     <mat-icon svgIcon="subscriptions" color="warn" aria-hidden="false"></mat-icon>
   </button>
 </form>
-
+Broaders
+<ul>
+  <li *ngFor="let concept of broaderQuery">
+    {{ concept }}
+  </li>
+</ul>
+Narrowers
+<ul>
+  <li *ngFor="let concept of narowerQuery">
+    {{ concept }}
+  </li>
+</ul>
+Related
+<ul>
+  <li *ngFor="let concept of relatedQuery">
+    {{ concept }}
+  </li>
+</ul>
 <div class="example-container mat-elevation-z8">
   <table mat-table [dataSource]="dataSource">
 
