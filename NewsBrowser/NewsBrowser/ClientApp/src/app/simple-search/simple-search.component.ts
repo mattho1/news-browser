@@ -5,6 +5,8 @@ import { FormControl } from '@angular/forms';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { SimpleNews } from '../models/SimpleNews';
 import { ActivatedRoute } from '@angular/router';
+import { DomSanitizer } from '@angular/platform-browser';
+import { MatIconRegistry } from '@angular/material/icon';
 
 @Component({
   selector: 'app-simple-search',
@@ -19,8 +21,10 @@ export class SimpleSearchComponent implements OnInit {
   page: number;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-
-  constructor(private route: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) {
+  constructor(private route: ActivatedRoute, private http: HttpClient, iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, @Inject('BASE_URL') private baseUrl: string) {
+    iconRegistry.addSvgIcon(
+      'subscriptions',
+      sanitizer.bypassSecurityTrustResourceUrl('assets/icons/subscriptions.svg'));
   }
 
   ngOnInit() {
