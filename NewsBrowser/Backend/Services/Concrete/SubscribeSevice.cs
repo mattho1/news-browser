@@ -5,6 +5,7 @@ using Backend.Services.Abstract;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,12 +32,27 @@ namespace Backend.Services.Concrete
             if (string.IsNullOrEmpty(idNews))
                 return;
 
-            var subscribers = _subscribeRepository.GetAllSubscribers();
-            foreach(var subscriber in subscribers)
+            var queriesOneSubscriber = _subscribeRepository
+                                        .GetAllSubscribers()
+                                        .GroupBy(s => s.Email,
+                                                 s => s.Query,
+                                                 (email, queries) => new
+                                                 {
+                                                    Email = email,
+                                                    Queries = queries
+                                                 });
+
+            foreach (var subscriber in queriesOneSubscriber)
             {
-                var result = _newsRepository.CheckExistNews(subscriber.Query, idNews);
-                if (!string.IsNullOrEmpty(result))
-                    SendMessageAboutNewNews(subscriber.Email, result);
+                foreach (var query in subscriber.Queries)
+                {
+                    var result = _newsRepository.CheckExistNews(query, idNews);
+                    if (!string.IsNullOrEmpty(result))
+                    {
+                        SendMessageAboutNewNews(subscriber.Email, result);
+                        break;
+                    }
+                }
             }
         }
 
