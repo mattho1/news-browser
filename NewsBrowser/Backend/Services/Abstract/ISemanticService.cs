@@ -9,8 +9,8 @@ namespace Backend.Services.Abstract
 {
     public interface ISemanticService
     {
-        IEnumerable<string> GetBroaderConcepts(string searchQuery);
-        IEnumerable<string> GetNarrowerConcepts(string searchQuery);
-        IEnumerable<string> GetRelatedConcepts(string searchQuery);
+        IEnumerable<string> GetBroaderConcepts(string searchQuery, int n = 10);
+        IEnumerable<string> GetNarrowerConcepts(string searchQuery, int n = 10);
+        IEnumerable<string> GetRelatedConcepts(string searchQuery, int n = 10);
     }
 }

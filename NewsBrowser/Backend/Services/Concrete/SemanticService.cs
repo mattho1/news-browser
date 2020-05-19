@@ -43,41 +43,29 @@ namespace Backend.Services.Concrete
         /// shared - if enabled, then in case of many matching concepts,
         ///          intersection will be used; otherwise - union
         /// fullQueryComparision - decide whether compare full query content
-        /// with concepts (when matching) or each word from query separately
-        // public SemanticService(string graphPath = null, string nodeIdPropName = null,
-        //     string edgePropName = null, bool oneCandidate = false,
-        //     bool shared = false, double minSim=0.5,
-        //     bool fullQueryComparision = true)
-        // {
-        //     var selGraphPath = graphPath != null ? graphPath : DefaultGraphPath;
-        //     var selNodeIdPropName = nodeIdPropName != null ? nodeIdPropName : DefaultNodeIdPropName;
-        //     var selEdgePropName = edgePropName != null ? edgePropName : DefaultEdgePropName;
-
-        //     Graph = new SemanticGraph(selGraphPath, selNodeIdPropName, selEdgePropName);
-        // }
-
+        ///          with concepts (when matching) or each word from query separately
         public SemanticService()
         {
             Graph = new SemanticGraph(DefaultGraphPath, DefaultNodeIdPropName,
                 DefaultEdgePropName);
         }
 
-        public IEnumerable<string> GetBroaderConcepts(string searchQuery)
+        public IEnumerable<string> GetBroaderConcepts(string searchQuery, int n = 10)
         {
             return Graph.GetBroaderConcepts(searchQuery, OneCandidate, Shared, MinSim,
-                    FullQueryComparision);
+                    FullQueryComparision).Take(n);
         }
 
-        public IEnumerable<string> GetNarrowerConcepts(string searchQuery)
+        public IEnumerable<string> GetNarrowerConcepts(string searchQuery, int n = 10)
         {
             return Graph.GetNarrowerConcepts(searchQuery, OneCandidate, Shared, MinSim,
-                    FullQueryComparision);
+                    FullQueryComparision).Take(n);
         }
 
-        public IEnumerable<string> GetRelatedConcepts(string searchQuery)
+        public IEnumerable<string> GetRelatedConcepts(string searchQuery, int n = 10)
         {
             return Graph.GetRelatedConcepts(searchQuery, OneCandidate, Shared, MinSim,
-                    FullQueryComparision);
+                    FullQueryComparision).Take(n);
         }
     }
 

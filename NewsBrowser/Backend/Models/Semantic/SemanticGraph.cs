@@ -75,6 +75,7 @@ namespace Backend.Models.Semantic
             // Dictionary<string, HashSet<String>> brDict = new Dictionary<string, HashSet<String>>();
             // // contains entries: v label -> set of labels of narrowers
             // Dictionary<string, HashSet<String>> nrDict = new Dictionary<string, HashSet<String>>();
+
             foreach (var arc in Graph.Arcs())
             {
 
@@ -102,16 +103,22 @@ namespace Backend.Models.Semantic
                 } else {
                     throw new Exception("Unknown relationship type found: '" + edgeType + "'");
                 }
-                if (!Broaders.ContainsKey(narrower))
+                if (narrower != null && narrower != "")
                 {
-                    Broaders.Add(narrower, new HashSet<string>());
+                    if (!Broaders.ContainsKey(narrower))
+                    {
+                        Broaders.Add(narrower, new HashSet<string>());
+                    }
+                    Broaders[narrower].Add(broader);
                 }
-                Broaders[narrower].Add(broader);
-                if (!Narrowers.ContainsKey(broader))
+                if (broader != null && broader != "")
                 {
-                    Narrowers.Add(broader, new HashSet<string>());
+                    if (!Narrowers.ContainsKey(broader))
+                    {
+                        Narrowers.Add(broader, new HashSet<string>());
+                    }
+                    Narrowers[broader].Add(narrower);
                 }
-                Narrowers[broader].Add(narrower);
             }
             Console.WriteLine("Loaded " + Broaders.Count + " broader relations");
             Console.WriteLine("Loaded " + Narrowers.Count + " narrower relations");

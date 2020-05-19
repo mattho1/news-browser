@@ -13,24 +13,47 @@
     <mat-icon svgIcon="subscriptions" color="warn" aria-hidden="false"></mat-icon>
   </button>
 </form>
-Broaders
-<ul>
-  <li *ngFor="let concept of broaderQuery">
-    {{ concept }}
-  </li>
-</ul>
-Narrowers
-<ul>
-  <li *ngFor="let concept of narowerQuery">
-    {{ concept }}
-  </li>
-</ul>
-Related
-<ul>
-  <li *ngFor="let concept of relatedQuery">
-    {{ concept }}
-  </li>
-</ul>
+
+<!-- <ng-container *ngIf="showSemanticSearch"> -->
+  <mat-card >
+  <mat-card-title>Semantic search</mat-card-title>
+  <mat-card-subtitle>No clue about matching keyword? Make searching easier with semantic serach. </mat-card-subtitle>
+  <mat-card>
+    <mat-card-title>Broader concepts</mat-card-title>
+    <mat-card-subtitle>Concepts more general than your query</mat-card-subtitle>
+    <ng-container>
+      <mat-chip-list>
+        <mat-chip *ngFor="let concept of broaderQuery" [routerLink]="['/simple-search/', concept]" selected="true">
+          {{ concept }}
+        </mat-chip>
+      </mat-chip-list>
+    </ng-container>
+  </mat-card>
+  <mat-card>
+    <mat-card-title>Narrower concepts</mat-card-title>
+    <mat-card-subtitle>Concepts more specific than your query</mat-card-subtitle>
+    <ng-container>
+      <mat-chip-list>
+        <mat-chip *ngFor="let concept of narowerQuery" [routerLink]="['/simple-search/', concept]" selected="true">
+          {{ concept }}
+        </mat-chip>
+      </mat-chip-list>
+    </ng-container>
+  </mat-card>
+  <mat-card>
+    <mat-card-title>Related concepts</mat-card-title>
+    <mat-card-subtitle>Other concepts related with subject of your query</mat-card-subtitle>
+    <ng-container>
+      <mat-chip-list>
+        <mat-chip *ngFor="let concept of relatedQuery" [routerLink]="['/simple-search/', concept]" selected="true">
+          {{ concept }}
+        </mat-chip>
+      </mat-chip-list>
+    </ng-container>
+  </mat-card>
+</mat-card>
+<!-- </ng-container> -->
+
 <div class="example-container mat-elevation-z8">
   <table mat-table [dataSource]="dataSource">
 

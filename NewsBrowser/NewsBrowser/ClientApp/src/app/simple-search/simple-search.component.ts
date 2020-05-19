@@ -22,6 +22,7 @@ export class SimpleSearchComponent implements OnInit {
   searchQuery = new FormControl('', []);
   dataSource = new MatTableDataSource<SimpleNews>();
   page: number;
+  showSemanticSearch: boolean;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   constructor(private route: ActivatedRoute, private http: HttpClient, iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, @Inject('BASE_URL') private baseUrl: string) {
@@ -31,6 +32,7 @@ export class SimpleSearchComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.showSemanticSearch = false;
     this.dataSource.paginator = this.paginator;
     const sq = this.route.snapshot.paramMap.get('searchQuery');
     if (sq != null) {
@@ -57,6 +59,7 @@ export class SimpleSearchComponent implements OnInit {
     this.searchBroaderQuery();
     this.searchNarrowerQuery();
     this.searchRelatedQuery();
+    this.showSemanticSearch = true;
   }
 
   searchNews() {
