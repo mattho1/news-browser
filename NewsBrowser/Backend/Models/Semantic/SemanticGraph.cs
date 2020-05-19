@@ -7,7 +7,7 @@ using Graph = Satsuma.IGraph;
 
 namespace Backend.Models.Semantic
 {
-    class SemanticGraph
+    public class SemanticGraph
     {
         public Graph Graph { get; set; }
         public GraphML.StandardProperty<string> LabelsMap { get; set; }

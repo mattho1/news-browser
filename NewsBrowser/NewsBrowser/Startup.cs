@@ -1,5 +1,6 @@
 using Backend.Helpers;
 using Backend.Models;
+using Backend.Models.Semantic;
 using Backend.Repositories.Abstract;
 using Backend.Repositories.Concrete;
 using Backend.Services.Abstract;
@@ -19,6 +20,14 @@ namespace NewsBrowser
 {
     public class Startup
     {
+        // private string DefaultGraphPath = @"computer-science.graphml";
+        private string DefaultGraphPath = @"dbpedia-cat-graph-broader-only-top-3.graphml";
+        // private string DefaultGraphPath = @"dbpedia-graph-categories-only-broader-v2.graphml";
+
+        private string DefaultNodeIdPropName = "label";
+
+        private string DefaultEdgePropName = "label";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -54,8 +63,11 @@ namespace NewsBrowser
                 .GetSection("EmailConfiguration")
                 .Get<EmailConfig>();
 
+            var semanticGraph = new SemanticGraph(DefaultGraphPath, DefaultNodeIdPropName, DefaultEdgePropName);
+
             services.AddSingleton<IElasticClient>(esClient);
             services.AddSingleton(emailConfig);
+            services.AddSingleton(semanticGraph);
 
             services.AddScoped<INewsRepository, NewsRepository>();
             services.AddScoped<INewsService, NewsService>();

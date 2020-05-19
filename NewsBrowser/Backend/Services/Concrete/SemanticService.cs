@@ -15,14 +15,6 @@ namespace Backend.Services.Concrete
     {
         private SemanticGraph Graph;
 
-        // private string DefaultGraphPath = @"computer-science.graphml";
-        private string DefaultGraphPath = @"dbpedia-cat-graph-broader-only-top-3.graphml";
-        // private string DefaultGraphPath = @"dbpedia-graph-categories-only-broader-v2.graphml";
-
-        private string DefaultNodeIdPropName = "label";
-
-        private string DefaultEdgePropName = "label";
-
         private bool OneCandidate = false;
         private bool Shared = false;
         private double MinSim = 0.5;
@@ -44,10 +36,9 @@ namespace Backend.Services.Concrete
         ///          intersection will be used; otherwise - union
         /// fullQueryComparision - decide whether compare full query content
         ///          with concepts (when matching) or each word from query separately
-        public SemanticService()
+        public SemanticService(SemanticGraph graph)
         {
-            Graph = new SemanticGraph(DefaultGraphPath, DefaultNodeIdPropName,
-                DefaultEdgePropName);
+            Graph = graph;
         }
 
         public IEnumerable<string> GetBroaderConcepts(string searchQuery, int n = 10)
