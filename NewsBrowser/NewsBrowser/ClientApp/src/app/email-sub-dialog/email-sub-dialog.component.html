@@ -1,0 +1,15 @@
+<h1 mat-dialog-title id="title">Subscribe query</h1>
+<div mat-dialog-content class="container">
+  <h1 mat-dialog-title>Please enter the email address to send information about new messages.</h1>
+  <mat-form-field>
+    <input required matInput [formControl]="email" placeholder="Email">
+    <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-icon-button [disabled]="!email.valid" mat-button mat-raised-button cdkFocusInitial (click)="subscribeQuery()">
+    Send
+    <mat-icon>send</mat-icon>
+  </button>
+  <button mat-button mat-raised-button (click)="cancelDialog()">Cancel</button>
+</div>

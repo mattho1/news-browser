@@ -9,83 +9,85 @@
   <button mat-raised-button color="primary">
     Search
   </button>
-  <button mat-icon-button color="primary" if="subscribe-button" (click)="subscribeQuery()">
+  <button mat-icon-button color="primary" if="subscribe-button" (click)="openSubscribeDialog()">
     <mat-icon svgIcon="subscriptions" color="warn" aria-hidden="false"></mat-icon>
   </button>
 </form>
 
 <!-- <ng-container *ngIf="showSemanticSearch"> -->
-  <mat-card >
-  <mat-card-title>Semantic search</mat-card-title>
-  <mat-card-subtitle>No clue about matching keyword? Make searching easier with semantic serach. </mat-card-subtitle>
+<ng-container *ngIf="dataSource">
   <mat-card>
-    <mat-card-title>Broader concepts</mat-card-title>
-    <mat-card-subtitle>Concepts more general than your query</mat-card-subtitle>
-    <ng-container>
-      <mat-chip-list>
-        <mat-chip *ngFor="let concept of broaderQuery" [routerLink]="['/simple-search/', concept]" selected="true">
-          {{ concept }}
-        </mat-chip>
-      </mat-chip-list>
-    </ng-container>
+    <mat-card-title>Semantic search</mat-card-title>
+    <mat-card-subtitle>No clue about matching keyword? Make searching easier with semantic serach. </mat-card-subtitle>
+    <mat-card>
+      <mat-card-title>Broader concepts</mat-card-title>
+      <mat-card-subtitle>Concepts more general than your query</mat-card-subtitle>
+      <ng-container>
+        <mat-chip-list>
+          <mat-chip *ngFor="let concept of broaderQuery" [routerLink]="['/simple-search/', concept]" selected="true">
+            {{ concept }}
+          </mat-chip>
+        </mat-chip-list>
+      </ng-container>
+    </mat-card>
+    <mat-card>
+      <mat-card-title>Narrower concepts</mat-card-title>
+      <mat-card-subtitle>Concepts more specific than your query</mat-card-subtitle>
+      <ng-container>
+        <mat-chip-list>
+          <mat-chip *ngFor="let concept of narowerQuery" [routerLink]="['/simple-search/', concept]" selected="true">
+            {{ concept }}
+          </mat-chip>
+        </mat-chip-list>
+      </ng-container>
+    </mat-card>
+    <mat-card>
+      <mat-card-title>Related concepts</mat-card-title>
+      <mat-card-subtitle>Other concepts related with subject of your query</mat-card-subtitle>
+      <ng-container>
+        <mat-chip-list>
+          <mat-chip *ngFor="let concept of relatedQuery" [routerLink]="['/simple-search/', concept]" selected="true">
+            {{ concept }}
+          </mat-chip>
+        </mat-chip-list>
+      </ng-container>
+    </mat-card>
   </mat-card>
-  <mat-card>
-    <mat-card-title>Narrower concepts</mat-card-title>
-    <mat-card-subtitle>Concepts more specific than your query</mat-card-subtitle>
-    <ng-container>
-      <mat-chip-list>
-        <mat-chip *ngFor="let concept of narowerQuery" [routerLink]="['/simple-search/', concept]" selected="true">
-          {{ concept }}
-        </mat-chip>
-      </mat-chip-list>
-    </ng-container>
-  </mat-card>
-  <mat-card>
-    <mat-card-title>Related concepts</mat-card-title>
-    <mat-card-subtitle>Other concepts related with subject of your query</mat-card-subtitle>
-    <ng-container>
-      <mat-chip-list>
-        <mat-chip *ngFor="let concept of relatedQuery" [routerLink]="['/simple-search/', concept]" selected="true">
-          {{ concept }}
-        </mat-chip>
-      </mat-chip-list>
-    </ng-container>
-  </mat-card>
-</mat-card>
-<!-- </ng-container> -->
+</ng-container>
+  <!-- </ng-container> -->
 
-<div class="example-container mat-elevation-z8">
-  <table mat-table [dataSource]="dataSource">
+  <div class="example-container mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource">
 
-    <ng-container matColumnDef="title">
-      <th mat-header-cell *matHeaderCellDef> Title </th>
-      <td mat-cell *matCellDef="let element"> {{element.title}} </td>
-    </ng-container>
+      <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef> Title </th>
+        <td mat-cell *matCellDef="let element"> {{element.title}} </td>
+      </ng-container>
 
-    <ng-container matColumnDef="author">
-      <th mat-header-cell *matHeaderCellDef> Author </th>
-      <td mat-cell *matCellDef="let element"> {{element.author}} </td>
-    </ng-container>
+      <ng-container matColumnDef="author">
+        <th mat-header-cell *matHeaderCellDef> Author </th>
+        <td mat-cell *matCellDef="let element"> {{element.author}} </td>
+      </ng-container>
 
-    <ng-container matColumnDef="text">
-      <th mat-header-cell *matHeaderCellDef> Content </th>
-      <td mat-cell *matCellDef="let element"> {{element.text}} </td>
-    </ng-container>
+      <ng-container matColumnDef="text">
+        <th mat-header-cell *matHeaderCellDef> Content </th>
+        <td mat-cell *matCellDef="let element"> {{element.text}} </td>
+      </ng-container>
 
-    <ng-container matColumnDef="tags">
-      <th mat-header-cell *matHeaderCellDef> Tags </th>
-      <td mat-cell *matCellDef="let element">
-        <mat-form-field>
-          <mat-chip-list aria-label="Color selection">
-            <mat-chip *ngFor="let tag of element.tags" [color]="chipColor(tag.type)" [routerLink]="['/advanced-search/tag/', tag.name]" selected="true">
-              {{tag.name}}
-            </mat-chip>
-          </mat-chip-list>
-        </mat-form-field>
-    </ng-container>
+      <ng-container matColumnDef="tags">
+        <th mat-header-cell *matHeaderCellDef> Tags </th>
+        <td mat-cell *matCellDef="let element">
+          <mat-form-field>
+            <mat-chip-list aria-label="Color selection">
+              <mat-chip *ngFor="let tag of element.tags" [color]="chipColor(tag.type)" [routerLink]="['/advanced-search/tag/', tag.name]" selected="true">
+                {{tag.name}}
+              </mat-chip>
+            </mat-chip-list>
+          </mat-form-field>
+      </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;" [routerLink]="['/news-details/', row.id]"></tr>
-  </table>
-  <mat-paginator [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons></mat-paginator>
-</div>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" [routerLink]="['/news-details/', row.id]"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons></mat-paginator>
+  </div>

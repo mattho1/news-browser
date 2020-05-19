@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { MatButtonModule, MatInputModule, MatTableModule, MatChipsModule, MatCardModule, MatPaginatorModule, MatSelectModule, MatIconModule } from '@angular/material';
+import { MatButtonModule, MatInputModule, MatTableModule, MatChipsModule, MatCardModule, MatPaginatorModule, MatSelectModule, MatIconModule, MatDialogModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -14,6 +14,7 @@ import { SimpleSearchComponent } from './simple-search/simple-search.component';
 import { NewsDetailsComponent } from './news-details/news-details.component';
 import { AdvancedSearchComponent } from './advanced-search/advanced-search.component';
 import { CombinationSearchComponent } from './combination-search/combination-search.component';
+import { EmailSubDialogComponent } from './email-sub-dialog/email-sub-dialog.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { CombinationSearchComponent } from './combination-search/combination-sea
     NewsDetailsComponent,
     AdvancedSearchComponent,
     CombinationSearchComponent,
+    EmailSubDialogComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -40,6 +42,7 @@ import { CombinationSearchComponent } from './combination-search/combination-sea
     MatPaginatorModule,
     MatSelectModule,
     MatIconModule,
+    MatDialogModule,
     BrowserAnimationsModule,
     RouterModule.forRoot([
       { path: '', component: SimpleSearchComponent, pathMatch: 'full' },
@@ -55,6 +58,9 @@ import { CombinationSearchComponent } from './combination-search/combination-sea
     ])
   ],
   providers: [],
+  entryComponents: [
+    EmailSubDialogComponent,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

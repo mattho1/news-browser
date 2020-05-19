@@ -7,6 +7,8 @@ import { SimpleNews } from '../models/SimpleNews';
 import { ActivatedRoute } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
+import { MatDialog } from '@angular/material';
+import { EmailSubDialogComponent, EmailDialogData } from '../email-sub-dialog/email-sub-dialog.component';
 
 @Component({
   selector: 'app-simple-search',
@@ -25,7 +27,12 @@ export class SimpleSearchComponent implements OnInit {
   showSemanticSearch: boolean;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-  constructor(private route: ActivatedRoute, private http: HttpClient, iconRegistry: MatIconRegistry, sanitizer: DomSanitizer, @Inject('BASE_URL') private baseUrl: string) {
+  constructor(private route: ActivatedRoute,
+    private http: HttpClient,
+    iconRegistry: MatIconRegistry,
+    sanitizer: DomSanitizer,
+    public subDialog: MatDialog,
+    @Inject('BASE_URL') private baseUrl: string) {
     iconRegistry.addSvgIcon(
       'subscriptions',
       sanitizer.bypassSecurityTrustResourceUrl('assets/icons/subscriptions.svg'));
@@ -92,11 +99,19 @@ export class SimpleSearchComponent implements OnInit {
     }, error => console.error(error));
   }
 
-  subscribeQuery() {
-    let params = new HttpParams();
-    params = params.append('email', "cezar235711@gmail.com");
-    params = params.append('subscribeQuery', this.searchQuery.value);
+  openSubscribeDialog() {
+    if (this.searchQuery.value != null && this.searchQuery.value != "") {
+      const dialogHandler = this.subDialog.open(EmailSubDialogComponent, {
+        minWidth: '500px',
+        minHeight: '200px',
+        data: {
+          searchQr: this.searchQuery.value,
+        } as EmailDialogData
+      });
 
-    this.http.get<SimpleNews[]>(this.baseUrl + 'subscriber/subscribe', { params: params }).subscribe(_ => {}, error => console.error(error));
+      dialogHandler.afterClosed().subscribe(result => {
+        console.log('The dialog was closed');
+      });
+    }
   }
 }
