@@ -37,10 +37,10 @@ namespace Backend.Models.Semantic
             this.EdgePropName = edgePropName;
             InitGraph();
             // remove graph to reduce amount of used memory
-            Console.WriteLine("Removing Graph object from memory as it is no longer need ... ");
-            this.Graph = null;
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
+            // Console.WriteLine("Removing Graph object from memory as it is no longer need ... ");
+            // this.Graph = null;
+            // GC.Collect();
+            // GC.WaitForPendingFinalizers();
         }
 
         /// Loads graph and initialize required graph-related structures.
@@ -77,8 +77,13 @@ namespace Backend.Models.Semantic
             // Dictionary<string, HashSet<String>> nrDict = new Dictionary<string, HashSet<String>>();
             foreach (var arc in Graph.Arcs())
             {
-                string src = LabelsMap[Graph.U(arc)].ToLower();
-                string target = LabelsMap[Graph.V(arc)].ToLower();
+
+                string src = "";
+                src = LabelsMap.TryGetValue(Graph.U(arc), out src) ? src : "";
+                src = src.ToLower();
+                string target = "";
+                target = LabelsMap.TryGetValue(Graph.V(arc), out target) ? target : "";
+                target = target.ToLower();
                 string broader = "";
                 string narrower = "";
                 string edgeType = "";
@@ -119,17 +124,20 @@ namespace Backend.Models.Semantic
             foreach (var n in Graph.Nodes())
             {
                 var label = LabelsMap[n];
-                label = label.ToLower();
-                var words = Regex.Split(label, @"\s");
-                foreach (var w in words)
+                if (label != null)
                 {
-                    if (w.Length >= wordMinLen)
+                    label = label.ToLower();
+                    var words = Regex.Split(label, @"\s");
+                    foreach (var w in words)
                     {
-                        if (!WordLabels.ContainsKey(w))
+                        if (w.Length >= wordMinLen)
                         {
-                            WordLabels.Add(w, new HashSet<string>());
+                            if (!WordLabels.ContainsKey(w))
+                            {
+                                WordLabels.Add(w, new HashSet<string>());
+                            }
+                            WordLabels[w].Add(label);
                         }
-                        WordLabels[w].Add(label);
                     }
                 }
             }

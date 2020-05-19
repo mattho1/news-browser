@@ -15,7 +15,8 @@ namespace Backend.Services.Concrete
     {
         private SemanticGraph Graph;
 
-        private string DefaultGraphPath = @"computer-science.graphml";
+        // private string DefaultGraphPath = @"computer-science.graphml";
+        private string DefaultGraphPath = @"dbpedia-cat-graph-broader-only-top-3.graphml";
         // private string DefaultGraphPath = @"dbpedia-graph-categories-only-broader-v2.graphml";
 
         private string DefaultNodeIdPropName = "label";
