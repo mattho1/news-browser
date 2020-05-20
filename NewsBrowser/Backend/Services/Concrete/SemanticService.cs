@@ -58,6 +58,16 @@ namespace Backend.Services.Concrete
             return Graph.GetRelatedConcepts(searchQuery, OneCandidate, Shared, MinSim,
                     FullQueryComparision).Take(n);
         }
+
+        public bool UseIndexFrequency()
+        {
+            return Graph.IsIndexFrequencyDefined();
+        }
+
+        public int GetIndexConceptFrequency(string concept)
+        {
+            return Graph.LabelsDocFreq[concept];
+        }
     }
 
     // public class SemanticService: ISemanticService

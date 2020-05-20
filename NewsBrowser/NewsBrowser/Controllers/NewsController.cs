@@ -63,6 +63,20 @@ namespace NewsBrowser.Controllers
             return Ok(simQry);
         }
 
+        [HttpGet("useIndexFreq", Name = "UseIndexFreq")]
+        public IActionResult UseIndexFreq()
+        {
+            var res = _semanticService.UseIndexFrequency();
+            return Ok(res);
+        }
+
+        [HttpGet("getIndexConceptFrequency/{concept}", Name = "GetIndexConceptFrequency")]
+        public IActionResult GetIndexConceptFrequency(string concept)
+        {
+            var res = _semanticService.GetIndexConceptFrequency(concept);
+            return Ok(res);
+        }
+
         [HttpGet("advanced/{fieldName}/{searchPhrase}", Name = "SearchByField")]
         public IActionResult SearchByField(string fieldName, string searchPhrase, int page = 1)
         {

@@ -14,8 +14,59 @@
   </button>
 </form>
 
-<!-- <ng-container *ngIf="showSemanticSearch"> -->
-<ng-container *ngIf="dataSource">
+
+
+  <button mat-raised-button color="primary"
+      matBadge="8" matBadgePosition="before" matBadgeColor="accent">
+    Sample text
+  </button>
+
+  <ng-container *ngIf="dataSource && indexFreqEnabled">
+    <mat-card>
+      <mat-card-title>Semantic search</mat-card-title>
+      <mat-card-subtitle>No clue about matching keyword? Make searching easier with semantic serach. </mat-card-subtitle>
+      <mat-card>
+        <mat-card-title>Broader concepts</mat-card-title>
+        <mat-card-subtitle>Concepts more general than your query</mat-card-subtitle>
+        <ng-container>
+          <!-- <mat-chip-list>
+            <mat-chip *ngFor="let item of broaderConceptsFreq" [routerLink]="['/simple-search/', concept]" selected="true">
+              {{ item }}
+            </mat-chip>
+          </mat-chip-list> -->
+          <mat-chip-list>
+            <mat-chip *ngFor="let item of broaderConceptsFreq | keyvalue" [routerLink]="['/simple-search/', concept]" selected="true">
+              {{ item.key }} | {{ item.value }}
+            </mat-chip>
+          </mat-chip-list>
+        </ng-container>
+      </mat-card>
+      <!-- <mat-card>
+        <mat-card-title>Narrower concepts</mat-card-title>
+        <mat-card-subtitle>Concepts more specific than your query</mat-card-subtitle>
+        <ng-container>
+          <mat-chip-list>
+            <mat-chip *ngFor="let concept of narowerConcepts" [routerLink]="['/simple-search/', concept]" selected="true">
+              {{ concept }}
+            </mat-chip>
+          </mat-chip-list>
+        </ng-container>
+      </mat-card>
+      <mat-card>
+        <mat-card-title>Related concepts</mat-card-title>
+        <mat-card-subtitle>Other concepts related with subject of your query</mat-card-subtitle>
+        <ng-container>
+          <mat-chip-list>
+            <mat-chip *ngFor="let concept of relatedConcepts" [routerLink]="['/simple-search/', concept]" selected="true">
+              {{ concept }}
+            </mat-chip>
+          </mat-chip-list>
+        </ng-container>
+      </mat-card> -->
+    </mat-card>
+  </ng-container>
+
+<ng-container *ngIf="dataSource && !indexFreqEnabled">
   <mat-card>
     <mat-card-title>Semantic search</mat-card-title>
     <mat-card-subtitle>No clue about matching keyword? Make searching easier with semantic serach. </mat-card-subtitle>
@@ -24,7 +75,7 @@
       <mat-card-subtitle>Concepts more general than your query</mat-card-subtitle>
       <ng-container>
         <mat-chip-list>
-          <mat-chip *ngFor="let concept of broaderQuery" [routerLink]="['/simple-search/', concept]" selected="true">
+          <mat-chip *ngFor="let concept of broaderConcepts" [routerLink]="['/simple-search/', concept]" selected="true">
             {{ concept }}
           </mat-chip>
         </mat-chip-list>
@@ -35,7 +86,7 @@
       <mat-card-subtitle>Concepts more specific than your query</mat-card-subtitle>
       <ng-container>
         <mat-chip-list>
-          <mat-chip *ngFor="let concept of narowerQuery" [routerLink]="['/simple-search/', concept]" selected="true">
+          <mat-chip *ngFor="let concept of narowerConcepts" [routerLink]="['/simple-search/', concept]" selected="true">
             {{ concept }}
           </mat-chip>
         </mat-chip-list>
@@ -46,7 +97,7 @@
       <mat-card-subtitle>Other concepts related with subject of your query</mat-card-subtitle>
       <ng-container>
         <mat-chip-list>
-          <mat-chip *ngFor="let concept of relatedQuery" [routerLink]="['/simple-search/', concept]" selected="true">
+          <mat-chip *ngFor="let concept of relatedConcepts" [routerLink]="['/simple-search/', concept]" selected="true">
             {{ concept }}
           </mat-chip>
         </mat-chip-list>
@@ -54,7 +105,6 @@
     </mat-card>
   </mat-card>
 </ng-container>
-  <!-- </ng-container> -->
 
   <div class="example-container mat-elevation-z8">
     <table mat-table [dataSource]="dataSource">

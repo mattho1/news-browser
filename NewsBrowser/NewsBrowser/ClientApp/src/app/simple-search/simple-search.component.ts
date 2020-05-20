@@ -18,13 +18,16 @@ import { EmailSubDialogComponent, EmailDialogData } from '../email-sub-dialog/em
 export class SimpleSearchComponent implements OnInit {
   displayedColumns = ['title', 'author', 'text', 'tags'];
   newses: SimpleNews[];
-  broaderQuery: String[];
-  narowerQuery: String[];
-  relatedQuery: String[];
+  broaderConcepts: string[];
+  narowerConcepts: string[];
+  relatedConcepts: string[];
+  broaderConceptsFreq: { [id: string] : number; } = {};
+  narrowerConceeptsFreq: { [id: string] : number; } = {};
+  relatedQueryFreq: { [id: string] : number; } = {};
   searchQuery = new FormControl('', []);
   dataSource = new MatTableDataSource<SimpleNews>();
   page: number;
-  showSemanticSearch: boolean;
+  indexFreqEnabled: boolean;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   constructor(private route: ActivatedRoute,
@@ -39,7 +42,8 @@ export class SimpleSearchComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.showSemanticSearch = false;
+    this.isUsingIndexFrequency();
+    this.indexFreqEnabled = true;  // todo: just for tests, remove it
     this.dataSource.paginator = this.paginator;
     const sq = this.route.snapshot.paramMap.get('searchQuery');
     if (sq != null) {
@@ -66,7 +70,18 @@ export class SimpleSearchComponent implements OnInit {
     this.searchBroaderQuery();
     this.searchNarrowerQuery();
     this.searchRelatedQuery();
-    this.showSemanticSearch = true;
+    if (this.indexFreqEnabled) {
+      this.broaderConcepts.forEach(( c: string ) => {
+        console.log("foreach");
+        console.log(c);
+        this.getConceptsFrequency(c);
+      }
+      console.log(this.broaderConcepts);
+      for (var c of this.broaderConcepts) {
+        this.getConceptsFrequency(c);
+      }
+      console.log(this.broaderConcepts);
+    } 
   }
 
   searchNews() {
@@ -79,23 +94,23 @@ export class SimpleSearchComponent implements OnInit {
 
 
   searchBroaderQuery() {
-    this.broaderQuery = [];
-    this.http.get<String[]>(this.baseUrl + 'news/broaderQuery/' + this.searchQuery.value).subscribe(result => {
-      this.broaderQuery = result;
+    this.broaderConcepts = [];
+    this.http.get<string[]>(this.baseUrl + 'news/broaderQuery/' + this.searchQuery.value).subscribe(result => {
+      this.broaderConcepts = result;
     }, error => console.error(error));
   }
 
   searchNarrowerQuery() {
-    this.narowerQuery = [];
-    this.http.get<String[]>(this.baseUrl + 'news/narrowerQuery/' + this.searchQuery.value).subscribe(result => {
-      this.narowerQuery = result;
+    this.narowerConcepts = [];
+    this.http.get<string[]>(this.baseUrl + 'news/narrowerQuery/' + this.searchQuery.value).subscribe(result => {
+      this.narowerConcepts = result;
     }, error => console.error(error));
   }
 
   searchRelatedQuery() {
-    this.relatedQuery = [];
-    this.http.get<String[]>(this.baseUrl + 'news/relatedQuery/' + this.searchQuery.value).subscribe(result => {
-      this.relatedQuery = result;
+    this.relatedConcepts = [];
+    this.http.get<string[]>(this.baseUrl + 'news/relatedQuery/' + this.searchQuery.value).subscribe(result => {
+      this.relatedConcepts = result;
     }, error => console.error(error));
   }
 
@@ -114,4 +129,39 @@ export class SimpleSearchComponent implements OnInit {
       });
     }
   }
+
+  isUsingIndexFrequency() {
+    this.broaderConcepts = [];
+    this.http.get<boolean>(this.baseUrl + 'news/useIndexFreq').subscribe(result => {
+      this.indexFreqEnabled = result;
+      console.log(result);
+    }, error => console.error(error));
+  }
+
+//   getConceptsFrequency() {
+//     this.http.get<number>(this.baseUrl + 'news/getIndexConceptFrequency/' + 'nature').subscribe(result => {
+//         this.broaderConceptsFreq['nature'] = result;
+//         console.log(result);
+//       }, error => console.error(error));
+// }
+
+
+getConceptsFrequency(c: string) {
+    this.http.get<number>(this.baseUrl + 'news/getIndexConceptFrequency/' + c).subscribe(result => {
+      this.broaderConceptsFreq[c] = result;
+      console.log(c);
+      console.log(result);
+    }, error => console.error(error));
+}
+
+  // getConceptsFrequency() {
+  //     this.broaderConcepts.forEach(( c: string ) => {
+  //       this.http.get<number>(this.baseUrl + 'news/getIndexConceptFrequency/' + c).subscribe(result => {
+  //         this.broaderConceptsFreq[c] = result;
+  //         console.log(c);
+  //         console.log(result);
+  //       }, error => console.error(error));
+  //     });
+  //   console.log(this.broaderConceptsFreq);
+  // }
 }

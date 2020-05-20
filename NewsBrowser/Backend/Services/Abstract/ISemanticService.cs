@@ -12,5 +12,7 @@ namespace Backend.Services.Abstract
         IEnumerable<string> GetBroaderConcepts(string searchQuery, int n = 10);
         IEnumerable<string> GetNarrowerConcepts(string searchQuery, int n = 10);
         IEnumerable<string> GetRelatedConcepts(string searchQuery, int n = 10);
+        bool UseIndexFrequency();
+        int GetIndexConceptFrequency(string concept);
     }
 }
