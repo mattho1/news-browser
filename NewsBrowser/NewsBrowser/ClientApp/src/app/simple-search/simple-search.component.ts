@@ -75,7 +75,7 @@ export class SimpleSearchComponent implements OnInit {
         console.log("foreach");
         console.log(c);
         this.getConceptsFrequency(c);
-      }
+      });
       console.log(this.broaderConcepts);
       for (var c of this.broaderConcepts) {
         this.getConceptsFrequency(c);
