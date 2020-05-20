@@ -1,0 +1,39 @@
+---
+version: '2'
+services:
+  elasticsearch:
+    image: elasticsearch:7.6.2
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+    volumes:
+      - es_volume:/usr/share/elasticsearch
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    networks:
+      - news-app
+  webapp:
+    container_name: webapp-container
+    build:
+      context: ../
+      dockerfile: ./docker/news-browser-app/Dockerfile
+    depends_on:
+      - elasticsearch
+    volumes:
+      - /mnt/149654A1965484E0/semestr-IIIm/SWI/P/solr/data/eng-news-300:/home/data/documents
+      - ./entrypoint.sh:/entrypoint.sh
+    entrypoint: ["/entrypoint.sh", "/home/data/documents", "sample500000"]
+    ports:
+        - "15001:5001"
+    networks:
+      - news-app
+
+
+volumes:
+  es_volume:
+  data_volume:
+
+networks:
+  news-app:
+    driver: bridge
