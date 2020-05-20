@@ -1,7 +1,5 @@
-<h1 id="tableLabel">Simple search</h1>
-
-<form (ngSubmit)="submitSearch()" #searchForm="ngForm" class="full-width">
-  <mat-form-field class="search-width">
+<form (ngSubmit)="submitSearch()" #searchForm="ngForm" id="search-section">
+  <mat-form-field id="search-width">
     <input matInput
            placeholder="Search"
            [formControl]="searchQuery" />
@@ -9,16 +7,18 @@
   <button mat-raised-button color="primary">
     Search
   </button>
-  <button mat-icon-button color="primary" if="subscribe-button" (click)="openSubscribeDialog()">
+  <!--<button mat-icon-button color="primary" if="subscribe-button" (click)="openSubscribeDialog()">
     <mat-icon svgIcon="subscriptions" color="warn" aria-hidden="false"></mat-icon>
-  </button>
+  </button>-->
 </form>
 
 <!-- <ng-container *ngIf="showSemanticSearch"> -->
 <ng-container *ngIf="dataSource">
   <mat-card>
-    <mat-card-title>Semantic search</mat-card-title>
-    <mat-card-subtitle>No clue about matching keyword? Make searching easier with semantic serach. </mat-card-subtitle>
+    <mat-card-header>
+      <mat-card-title>Semantic search</mat-card-title>
+      <mat-card-subtitle>No clue about matching keyword? Make searching easier with semantic serach. </mat-card-subtitle>
+    </mat-card-header>
     <mat-card>
       <mat-card-title>Broader concepts</mat-card-title>
       <mat-card-subtitle>Concepts more general than your query</mat-card-subtitle>
@@ -52,7 +52,7 @@
         </mat-chip-list>
       </ng-container>
     </mat-card>
-  </mat-card>
+</mat-card>
 </ng-container>
   <!-- </ng-container> -->
 

@@ -1,4 +1,4 @@
-#full-width {
+#search-section {
   width: 100%;
 }
 
@@ -45,4 +45,10 @@ table {
 
 #subscribe-button{
     padding-left:10px;
+}
+
+.text-oneline {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
