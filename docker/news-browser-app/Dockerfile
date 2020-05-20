@@ -17,12 +17,15 @@ RUN ls /home/install \
     && apt-get install -y dotnet-sdk-3.1 \
     dotnet-runtime-3.1
 
+RUN apt-get install -y python3-pip
+RUN yes | pip3 install requests elasticsearch
+
 RUN pwd && ls src
 COPY NewsBrowser /home/install/src
-COPY import /home/data/import
+COPY NewsBrowser/import /home/data/import
 
 WORKDIR /home/install/src
 
 COPY ./docker/entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-ENTRYPOINT ["/docker-entrypoint.sh"]
+RUN chmod a+x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
