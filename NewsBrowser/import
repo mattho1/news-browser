@@ -23,9 +23,9 @@ else:
 
 time_file = 'import.log'
 limit_documents = None   # number or None
-res = requests.get('http://localhost:9200')
+res = requests.get('http://news-elasticsearch:9200')
 print("Elasticsearch instance details:\n{}".format(bytes.decode(res.content)))
-es = Elasticsearch([{'host': 'localhost', 'port': '9200'}])
+es = Elasticsearch([{'host': 'news-elasticsearch', 'port': '9200'}])
 
 if es.indices.exists(index=ES_INDEX):
     print("Found already created index: '{}'".format(ES_INDEX))
