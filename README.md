@@ -6,4 +6,9 @@ Adres datasetu: https://webhose.io/free-datasets/english-news-articles/
 
 # uruchomienie
 **Należy uzupełnić ścieżkę do katalogu z dokumentami w docker-compose.yml, linia 10**
-docker-compose 
+W celu uruchomienia należy wywołać:
+```
+docker-compose up -d
+```
+Po uruchomieniu silnika i aplikacji, aplikacja będzie dostępna pod adresem
+**http://localhost:15000**
