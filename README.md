@@ -5,7 +5,8 @@ W celu pobrania datasetu konieczne jest zarejestrowanie się na stronie.
 Adres datasetu: https://webhose.io/free-datasets/english-news-articles/
 
 # uruchomienie
-**Należy uzupełnić ścieżkę do katalogu z dokumentami w docker-compose.yml, linia 10**
+**UWAGA: Należy uzupełnić ścieżkę do katalogu z dokumentami w docker-compose.yml:**
+**Podmienić '/PATH/TO/DOCUMENTS/DIR' na ścieżkę w swoim systemie do katalogu z dokumentami**
 W celu uruchomienia należy wywołać:
 ```
 docker-compose up -d
