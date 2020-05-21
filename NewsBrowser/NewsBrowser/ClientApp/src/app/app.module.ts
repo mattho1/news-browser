@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { MatButtonModule, MatInputModule, MatTableModule, MatChipsModule, MatCardModule, MatPaginatorModule, MatSelectModule, MatIconModule, MatDialogModule } from '@angular/material';
+import { MatButtonModule, MatInputModule, MatTableModule, MatChipsModule, MatCardModule, MatPaginatorModule, MatSelectModule, MatIconModule, MatDialogModule, MatBadgeModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -39,6 +39,7 @@ import { EmailSubDialogComponent } from './email-sub-dialog/email-sub-dialog.com
     MatTableModule,
     MatChipsModule,
     MatCardModule,
+    MatBadgeModule,
     MatPaginatorModule,
     MatSelectModule,
     MatIconModule,

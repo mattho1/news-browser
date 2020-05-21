@@ -175,4 +175,12 @@ export class SimpleSearchComponent implements OnInit {
       return this.http.get<number>(this.baseUrl + 'news/getIndexConceptFrequency/' + c);
   }
 
+  shortenBadgeNumber(n: number)
+  {
+    if (n > 999) {
+      return Math.floor(n / 1000) + "k";
+    }
+    return n;
+  }
+
 }

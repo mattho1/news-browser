@@ -7,17 +7,7 @@
   <button mat-raised-button color="primary">
     Search
   </button>
-  <!--<button mat-icon-button color="primary" if="subscribe-button" (click)="openSubscribeDialog()">
-    <mat-icon svgIcon="subscriptions" color="warn" aria-hidden="false"></mat-icon>
-  </button>-->
 </form>
-
-
-
-  <button mat-raised-button color="primary"
-      matBadge="8" matBadgePosition="before" matBadgeColor="accent">
-    Button with badge
-  </button>
 
   <ng-container *ngIf="dataSource && indexFreqEnabled">
     <mat-card>
@@ -29,14 +19,14 @@
         <mat-card-title>Broader concepts</mat-card-title>
         <mat-card-subtitle>Concepts more general than your query</mat-card-subtitle>
         <ng-container>
-          <mat-chip-list>
-             <!-- hack with click because version with routreLink won't work -->
-            <mat-chip *ngFor="let item of broaderConceptsFreq | keyvalue " (click)="newSearch($event, item.key)" selected="true">
-            <!-- <mat-chip *ngFor="let item of broaderConceptsFreq | keyvalue " [routerLink]="['/simple-search/', item.key]" selected="true"> -->
-            <!-- <mat-chip *ngFor="let item of sortBy(broaderConceptsFreq) " [routerLink]="['/simple-search/', concept]" selected="true"> -->
-              {{ item.key }} | {{ item.value }}
-            </mat-chip>
-          </mat-chip-list>
+          <div class="example-button-row">
+            <button class="mat-raised-button-sem" *ngFor="let item of broaderConceptsFreq | keyvalue " 
+                (click)="newSearch($event, item.key)" selected="true" 
+                mat-raised-button color="primary" matBadge="{{shortenBadgeNumber(item.value)}}" 
+                matBadgePosition="after" matBadgeColor="accent">
+              {{ item.key }}
+            </button>
+          </div>
         </ng-container>
       </mat-card>
       
@@ -44,13 +34,14 @@
         <mat-card-title>Narrower concepts</mat-card-title>
         <mat-card-subtitle>Concepts more specific than your query</mat-card-subtitle>
         <ng-container>
-          <mat-chip-list>
-            <!-- <mat-chip *ngFor="let item of narrowerConceptsFreq | keyvalue " [routerLink]="['/simple-search/', item.key]" selected="true"> -->
-              <!-- hack with click because version with routreLink won't work -->
-              <mat-chip *ngFor="let item of narrowerConceptsFreq | keyvalue " (click)="newSearch($event, item.key)" selected="true">
-              {{ item.key }} | {{ item.value }}
-            </mat-chip>
-          </mat-chip-list>
+          <div class="example-button-row">
+            <button class="mat-raised-button-sem" *ngFor="let item of narrowerConceptsFreq | keyvalue " 
+                  (click)="newSearch($event, item.key)" selected="true" 
+                  mat-raised-button color="primary" matBadge="{{shortenBadgeNumber(item.value)}}" 
+                  matBadgePosition="after" matBadgeColor="accent">
+                {{ item.key }}
+            </button>
+          </div>
         </ng-container>
       </mat-card>
 
@@ -58,13 +49,14 @@
         <mat-card-title>Related concepts</mat-card-title>
         <mat-card-subtitle>Other concepts related with subject of your query</mat-card-subtitle>
         <ng-container>
-          <mat-chip-list>
-            <!-- <mat-chip *ngFor="let item of relatedConceptsFreq | keyvalue " [routerLink]="['/simple-search/', item.key]" selected="true"> -->
-            <!-- hack with click because version with routreLink won't work -->
-            <mat-chip *ngFor="let item of relatedConceptsFreq | keyvalue " (click)="newSearch($event, item.key)" selected="true">
-              {{ item.key }} | {{ item.value }}
-            </mat-chip>
-          </mat-chip-list>
+          <div class="example-button-row">
+            <button class="mat-raised-button-sem" *ngFor="let item of relatedConceptsFreq | keyvalue " 
+                  (click)="newSearch($event, item.key)" selected="true" 
+                  mat-raised-button color="primary" matBadge="{{shortenBadgeNumber(item.value)}}" 
+                  matBadgePosition="after" matBadgeColor="accent">
+                {{ item.key }}
+            </button>
+          </div>
         </ng-container>
       </mat-card>
  
