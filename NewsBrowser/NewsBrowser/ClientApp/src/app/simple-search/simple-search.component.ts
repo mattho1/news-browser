@@ -18,13 +18,16 @@ import { EmailSubDialogComponent, EmailDialogData } from '../email-sub-dialog/em
 export class SimpleSearchComponent implements OnInit {
   displayedColumns = ['title', 'author', 'text', 'tags'];
   newses: SimpleNews[];
-  broaderQuery: String[];
-  narowerQuery: String[];
-  relatedQuery: String[];
+  broaderConcepts: string[];
+  narowerConcepts: string[];
+  relatedConcepts: string[];
+  broaderConceptsFreq = {};
+  narrowerConceptsFreq: { [id: string] : number; } = {};
+  relatedConceptsFreq: { [id: string] : number; } = {};
   searchQuery = new FormControl('', []);
   dataSource = new MatTableDataSource<SimpleNews>();
   page: number;
-  showSemanticSearch: boolean;
+  indexFreqEnabled: boolean;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   constructor(private route: ActivatedRoute,
@@ -39,12 +42,13 @@ export class SimpleSearchComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.showSemanticSearch = false;
+    this.isUsingIndexFrequency();
     this.dataSource.paginator = this.paginator;
     const sq = this.route.snapshot.paramMap.get('searchQuery');
     if (sq != null) {
       this.searchQuery.setValue(sq);
-      this.searchNews();
+      // this.searchNews();
+      this.submitSearch();
     }
   }
 
@@ -66,7 +70,6 @@ export class SimpleSearchComponent implements OnInit {
     this.searchBroaderQuery();
     this.searchNarrowerQuery();
     this.searchRelatedQuery();
-    this.showSemanticSearch = true;
   }
 
   searchNews() {
@@ -77,25 +80,70 @@ export class SimpleSearchComponent implements OnInit {
     }, error => console.error(error));
   }
 
+  // used to force fetching data for new query
+  newSearch(event, query: string)
+  {
+    this.searchQuery.setValue(query);
+    this.submitSearch();
+  }
 
   searchBroaderQuery() {
-    this.broaderQuery = [];
-    this.http.get<String[]>(this.baseUrl + 'news/broaderQuery/' + this.searchQuery.value).subscribe(result => {
-      this.broaderQuery = result;
+    this.broaderConcepts = [];
+    this.broaderConceptsFreq = {};
+    this.http.get<string[]>(this.baseUrl + 'news/broaderQuery/' + this.searchQuery.value).subscribe(result => {
+      this.broaderConcepts = result;
+      if (this.indexFreqEnabled) {        
+        let loop = (concept: string) => {
+          this.getConceptsFrequency(concept)
+          .subscribe(result => {
+            if (this.broaderConcepts.length) {
+              this.broaderConceptsFreq[concept] = result;
+              loop(this.broaderConcepts.shift());
+            }
+          });
+        }
+        loop(this.broaderConcepts.shift());
+      } 
     }, error => console.error(error));
   }
 
   searchNarrowerQuery() {
-    this.narowerQuery = [];
-    this.http.get<String[]>(this.baseUrl + 'news/narrowerQuery/' + this.searchQuery.value).subscribe(result => {
-      this.narowerQuery = result;
+    this.narowerConcepts = [];
+    this.narrowerConceptsFreq = {};
+    this.http.get<string[]>(this.baseUrl + 'news/narrowerQuery/' + this.searchQuery.value).subscribe(result => {
+      this.narowerConcepts = result;
+      if (this.indexFreqEnabled) {        
+        let loop = (concept: string) => {
+          this.getConceptsFrequency(concept)
+          .subscribe(result => {
+            if (this.narowerConcepts.length) {
+              this.narrowerConceptsFreq[concept] = result;
+              loop(this.narowerConcepts.shift());
+            }
+          });
+        }
+        loop(this.narowerConcepts.shift());
+      } 
     }, error => console.error(error));
   }
 
   searchRelatedQuery() {
-    this.relatedQuery = [];
-    this.http.get<String[]>(this.baseUrl + 'news/relatedQuery/' + this.searchQuery.value).subscribe(result => {
-      this.relatedQuery = result;
+    this.relatedConcepts = [];
+    this.relatedConceptsFreq = {};
+    this.http.get<string[]>(this.baseUrl + 'news/relatedQuery/' + this.searchQuery.value).subscribe(result => {
+      this.relatedConcepts = result;
+      if (this.indexFreqEnabled) {        
+        let loop = (concept: string) => {
+          this.getConceptsFrequency(concept)
+          .subscribe(result => {
+            if (this.relatedConcepts.length) {
+              this.relatedConceptsFreq[concept] = result;
+              loop(this.relatedConcepts.shift());
+            }
+          });
+        }
+        loop(this.relatedConcepts.shift());
+      } 
     }, error => console.error(error));
   }
 
@@ -114,4 +162,17 @@ export class SimpleSearchComponent implements OnInit {
       });
     }
   }
+
+  isUsingIndexFrequency() {
+    this.http.get<boolean>(this.baseUrl + 'news/useIndexFreq').subscribe(result => {
+      this.indexFreqEnabled = result;
+      console.log(result);
+    }, error => console.error(error));
+  }
+
+
+  getConceptsFrequency(c: string) {
+      return this.http.get<number>(this.baseUrl + 'news/getIndexConceptFrequency/' + c);
+  }
+
 }

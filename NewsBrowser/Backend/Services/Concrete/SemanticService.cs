@@ -41,46 +41,32 @@ namespace Backend.Services.Concrete
             Graph = graph;
         }
 
-        public IEnumerable<string> GetBroaderConcepts(string searchQuery, int n = 10)
+        public IEnumerable<string> GetBroaderConcepts(string searchQuery, int n = 50)
         {
             return Graph.GetBroaderConcepts(searchQuery, OneCandidate, Shared, MinSim,
                     FullQueryComparision).Take(n);
         }
 
-        public IEnumerable<string> GetNarrowerConcepts(string searchQuery, int n = 10)
+        public IEnumerable<string> GetNarrowerConcepts(string searchQuery, int n = 50)
         {
             return Graph.GetNarrowerConcepts(searchQuery, OneCandidate, Shared, MinSim,
                     FullQueryComparision).Take(n);
         }
 
-        public IEnumerable<string> GetRelatedConcepts(string searchQuery, int n = 10)
+        public IEnumerable<string> GetRelatedConcepts(string searchQuery, int n = 50)
         {
             return Graph.GetRelatedConcepts(searchQuery, OneCandidate, Shared, MinSim,
                     FullQueryComparision).Take(n);
         }
+
+        public bool UseIndexFrequency()
+        {
+            return Graph.IsIndexFrequencyDefined();
+        }
+
+        public int GetIndexConceptFrequency(string concept)
+        {
+            return Graph.LabelsDocFreq[concept];
+        }
     }
-
-    // public class SemanticService: ISemanticService
-    // {
-
-    //     public SemanticService()
-    //     {
-
-    //     }
-
-    //     public IEnumerable<string> GetBroaderConcepts(string searchQuery)
-    //     {
-    //         return new List<string> {"a", "b"};
-    //     }
-
-    //     public IEnumerable<string> GetNarrowerConcepts(string searchQuery)
-    //     {
-    //         return new List<string> {"a", "d"};
-    //     }
-
-    //     public IEnumerable<string> GetRelatedConcepts(string searchQuery)
-    //     {
-    //         return new List<string> {"e", "b"};
-    //     }
-    // }
 }

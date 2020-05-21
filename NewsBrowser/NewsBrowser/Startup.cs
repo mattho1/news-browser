@@ -24,6 +24,7 @@ namespace NewsBrowser
         private string DefaultGraphPath = @"dbpedia-cat-graph-broader-only-top-3.graphml";
         // private string DefaultGraphPath = @"dbpedia-graph-categories-only-broader-v2.graphml";
 
+        private string LablesDocFreqPath = @"dbpedia-cat-graph-top-3-labels-doc-freq.txt";
         private string DefaultNodeIdPropName = "label";
 
         private string DefaultEdgePropName = "label";
@@ -63,7 +64,8 @@ namespace NewsBrowser
                 .GetSection("EmailConfiguration")
                 .Get<EmailConfig>();
 
-            var semanticGraph = new SemanticGraph(DefaultGraphPath, DefaultNodeIdPropName, DefaultEdgePropName);
+            var semanticGraph = new SemanticGraph(DefaultGraphPath, DefaultNodeIdPropName, 
+                    DefaultEdgePropName, lablesDocFreqPath: LablesDocFreqPath);
 
             services.AddSingleton<IElasticClient>(esClient);
             services.AddSingleton(emailConfig);
@@ -100,7 +102,7 @@ namespace NewsBrowser
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            // app.UseHttpsRedirection();
             app.UseStaticFiles();
             if (!env.IsDevelopment())
             {

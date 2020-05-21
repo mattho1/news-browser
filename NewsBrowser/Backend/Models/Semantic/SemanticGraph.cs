@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Linq;
@@ -18,6 +19,8 @@ namespace Backend.Models.Semantic
 
         public Dictionary<string, HashSet<String>> WordLabels = new Dictionary<string, HashSet<String>>();
 
+        public Dictionary<string, int> LabelsDocFreq = null;
+
         private GraphML.StandardProperty<string> EdgeTypeMap { get; set; }
         // private GraphML.StandardProperty<string> NarrowerEdgesMap { get; set; }
         private string GraphPath { get; set; }
@@ -30,17 +33,16 @@ namespace Backend.Models.Semantic
 
         // private Dictionary<string, List<String>> NodeNeighbLabelsDict { get; set; }
         public SemanticGraph(String graphPath, string nodeIdPropName,
-            string edgePropName)
+            string edgePropName, string lablesDocFreqPath = null)
         {
             this.GraphPath = graphPath;
             this.NodeIdPropName = nodeIdPropName;
             this.EdgePropName = edgePropName;
+            if (lablesDocFreqPath != null)
+            {
+                LoadLabelsDocFreq(lablesDocFreqPath);
+            }
             InitGraph();
-            // remove graph to reduce amount of used memory
-            // Console.WriteLine("Removing Graph object from memory as it is no longer need ... ");
-            // this.Graph = null;
-            // GC.Collect();
-            // GC.WaitForPendingFinalizers();
         }
 
         /// Loads graph and initialize required graph-related structures.
@@ -103,22 +105,26 @@ namespace Backend.Models.Semantic
                 } else {
                     throw new Exception("Unknown relationship type found: '" + edgeType + "'");
                 }
-                if (narrower != null && narrower != "")
+                if (IsAppropriateForIndex(broader) && IsAppropriateForIndex(narrower))
                 {
-                    if (!Broaders.ContainsKey(narrower))
+                    if (narrower != null && narrower.Trim() != "")
                     {
-                        Broaders.Add(narrower, new HashSet<string>());
+                        if (!Broaders.ContainsKey(narrower))
+                        {
+                            Broaders.Add(narrower, new HashSet<string>());
+                        }
+                        Broaders[narrower].Add(broader);
                     }
-                    Broaders[narrower].Add(broader);
-                }
-                if (broader != null && broader != "")
-                {
-                    if (!Narrowers.ContainsKey(broader))
+                    if (broader != null && broader.Trim() != "")
                     {
-                        Narrowers.Add(broader, new HashSet<string>());
+                        if (!Narrowers.ContainsKey(broader))
+                        {
+                            Narrowers.Add(broader, new HashSet<string>());
+                        }
+                        Narrowers[broader].Add(narrower);
                     }
-                    Narrowers[broader].Add(narrower);
                 }
+                
             }
             Console.WriteLine("Loaded " + Broaders.Count + " broader relations");
             Console.WriteLine("Loaded " + Narrowers.Count + " narrower relations");
@@ -131,7 +137,8 @@ namespace Backend.Models.Semantic
             foreach (var n in Graph.Nodes())
             {
                 var label = LabelsMap[n];
-                if (label != null)
+                // avoid adding labels which are not related with any document in index
+                if (label != null && IsAppropriateForIndex(label))
                 {
                     label = label.ToLower();
                     var words = Regex.Split(label, @"\s");
@@ -148,6 +155,19 @@ namespace Backend.Models.Semantic
                     }
                 }
             }
+        }
+
+
+        // check whether freq map given
+        public bool IsIndexFrequencyDefined()
+        {
+            return LabelsDocFreq != null && LabelsDocFreq.Count > 0;
+        }
+
+        // check whether label is related with any document in index (if freq map given)
+        public bool IsAppropriateForIndex(string label)
+        {
+            return !IsIndexFrequencyDefined() || LabelsDocFreq.ContainsKey(label);
         }
 
         // exact method to call for query
@@ -208,7 +228,7 @@ namespace Backend.Models.Semantic
 
         // get candidate concepts from graph matching words in query
         public HashSet<string> GetCandidates(string query, double minSim=0.5,
-            bool fullQueryComparision = true)
+            bool fullQueryComparision = true, int max = 50)
         {
             var candidates = new HashSet<string>();
             query = query.ToLower();
@@ -220,6 +240,10 @@ namespace Backend.Models.Semantic
                 {
                     foreach (var c in WordLabels[w])
                     {
+                        if (candidates.Count >= max)
+                        {
+                            return candidates;
+                        }
                         if (c != null)
                         {
                             double sim = 0.0;
@@ -354,6 +378,13 @@ namespace Backend.Models.Semantic
             return Narrowers.ContainsKey(vlabel) ? Narrowers[vlabel] : new HashSet<string>();
         }
 
+
+        public void LoadLabelsDocFreq(string lablesDocFreqPath)
+        {
+            LabelsDocFreq = ReadMappingFromFile(lablesDocFreqPath);
+        }
+
+        // helper methods
         public void PrintBroaders(string vlabel)
         {
             var broaders = GetBroaders(vlabel);
@@ -375,6 +406,19 @@ namespace Backend.Models.Semantic
                 Console.WriteLine("Node "+node+": label is "+(hasLabel ? label.ToString() : node.ToString()));
             }
 
+        }
+
+        static Dictionary<string, int> ReadMappingFromFile(string filePath,
+                char sep = '\t')
+        {
+            StreamReader reader = new StreamReader(filePath);
+            Dictionary<string, int> d = new Dictionary<string, int>();
+            while (reader.Peek() >= 0)
+            {
+                 string line = reader.ReadLine();
+                 d.Add(line.Split(sep)[0], Int32.Parse(line.Split(sep)[1]));
+            }
+            return d;
         }
 
 

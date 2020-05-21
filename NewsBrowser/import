@@ -1,0 +1,51 @@
+#!/usr/bin/env python3
+import sys
+import requests, json, os
+from elasticsearch import Elasticsearch
+import time
+
+usage = """
+USAGE:
+./import DATA_DIR [INDEX_NAME]
+"""
+
+directory = '/mnt/149654A1965484E0/semestr-IIIm/SWI/P/solr/data/eng-news-1k'
+if len(sys.argv) > 1 and os.path.isdir(sys.argv[1]):
+    directory = sys.argv[1]
+    ES_INDEX = directory.split('/')[-1]
+#   ES_INDEX = 'sample500000'  # just for compability with current behavior
+    if len(sys.argv) > 2:
+        ES_INDEX = sys.argv[2]
+else:
+    print("Path to directory with documents is invalid or not given.")
+    print(usage)
+    raise ValueError
+
+time_file = 'import.log'
+limit_documents = None   # number or None
+res = requests.get('http://news-elasticsearch:9200')
+print("Elasticsearch instance details:\n{}".format(bytes.decode(res.content)))
+es = Elasticsearch([{'host': 'news-elasticsearch', 'port': '9200'}])
+
+if es.indices.exists(index=ES_INDEX):
+    print("Found already created index: '{}'".format(ES_INDEX))
+else:
+    print("Creating index '{}' with data from '{}' ...".format(ES_INDEX, directory))
+
+    i = 1
+    start = time.time()
+    for filename in os.listdir(directory):
+        if filename.endswith(".json") and (limit_documents is None or limit_documents > 0):
+            f = open(directory + '/' + filename, encoding="utf8")
+            document_content = f.read()
+            es.index(index=ES_INDEX, doc_type='document', id=i, body=json.loads(document_content))
+            i = i + 1
+            limit_documents = limit_documents - 1 if limit_documents is not None else None
+        else:
+            break
+    end = time.time()
+    elapsed = end - start
+    with open(time_file, "a") as myfile:
+        myfile.write(ES_INDEX + " " + str(elapsed) + " s \n")
+
+    print("Index '{}' of {} documents created in {:.2f} seconds.".format(ES_INDEX, i, elapsed))
