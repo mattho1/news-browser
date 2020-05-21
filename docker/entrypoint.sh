@@ -9,6 +9,8 @@ if [ ! -d "$DOC_PATH" ]; then
     exit 1
 fi
 
+echo "Waiting for elasticsearch ..."
+sleep 30
 echo "Checking Index ..."
 cd /home/data
 ./import "$DOC_PATH" "$INDEX_NAME"
