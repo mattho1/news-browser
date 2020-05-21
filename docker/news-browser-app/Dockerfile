@@ -20,7 +20,12 @@ RUN ls /home/install \
 RUN apt-get install -y python3-pip
 RUN yes | pip3 install requests elasticsearch
 
-RUN pwd && ls src
+ADD https://deb.nodesource.com/setup_10.x /home/install/setup_nodejs.sh
+RUN chmod a+x /home/install/setup_nodejs.sh \
+    && /home/install/setup_nodejs.sh \
+    && apt-get install -y nodejs
+
+RUN pwd && ls src && ls /home/install
 COPY NewsBrowser /home/install/src
 COPY NewsBrowser/import /home/data/import
 

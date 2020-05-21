@@ -9,10 +9,16 @@ if [ ! -d "$DOC_PATH" ]; then
     exit 1
 fi
 
+echo "Waiting for elasticsearch ..."
+sleep 30
 echo "Checking Index ..."
 cd /home/data
 ./import "$DOC_PATH" "$INDEX_NAME"
-ls -l $PWD
-ls -l /home/install/src
+
+# hask to avoid maintaining two versions of config file
+es_docker_host_name='news-elasticsearch'
+app_config_file='/home/install/src/NewsBrowser/appsettings.json'
+sed -i'' 's/localhost/'"$es_docker_host_name"'/g' "$app_config_file"
+
 echo "Starting app ..."
 cd /home/install/src/NewsBrowser && dotnet run
