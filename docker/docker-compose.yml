@@ -14,7 +14,7 @@ services:
     networks:
       - news-app
   news-webapp:
-    container_name: webapp-container
+    container_name: news-webapp
     build:
       context: ../
       dockerfile: ./docker/news-browser-app/Dockerfile
@@ -27,6 +27,7 @@ services:
     entrypoint: ["/entrypoint.sh", "/home/data/documents", "sample500000"]
     ports:
         - "15001:5001"
+        - "15000:5000"
     networks:
       - news-app
 
