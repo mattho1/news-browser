@@ -11,4 +11,4 @@ W celu uruchomienia należy wywołać:
 docker-compose up -d
 ```
 Po uruchomieniu silnika i aplikacji, aplikacja będzie dostępna pod adresem
-**http://localhost:15000**
+**http://localhost:15001**
