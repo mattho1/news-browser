@@ -36,9 +36,9 @@ export class SimpleSearchComponent implements OnInit {
     sanitizer: DomSanitizer,
     public subDialog: MatDialog,
     @Inject('BASE_URL') private baseUrl: string) {
-    iconRegistry.addSvgIcon(
-      'subscriptions',
-      sanitizer.bypassSecurityTrustResourceUrl('assets/icons/subscriptions.svg'));
+    //iconRegistry.addSvgIcon(
+    //  'subscriptions',
+    //  sanitizer.bypassSecurityTrustResourceUrl('assets/icons/subscriptions.svg'));
   }
 
   ngOnInit() {

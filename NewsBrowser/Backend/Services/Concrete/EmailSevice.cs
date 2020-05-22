@@ -24,14 +24,5 @@ namespace Backend.Services.Concrete
         {
             await _emailSender.SendEmail(sendEmailMessage);
         }
-        public async Task SendConfirmationSubscribeMessage(string email, string subscribeQuery)
-        {
-            await _emailSender.SendEmail(new EmailMessage()
-            {
-                Receiver = email,
-                Title = "New subscription",
-                Content = $"New subscription has been added to News Browser. \n\nSubscribe query: \n{subscribeQuery}"
-            });
-        }
     }
 }

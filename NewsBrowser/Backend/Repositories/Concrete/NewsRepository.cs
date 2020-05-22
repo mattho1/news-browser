@@ -186,5 +186,104 @@ namespace Backend.Repositories.Concrete
                                     .Query(idNews)))
                                     )))?.Documents.FirstOrDefault()?.Id;
         }
+
+        public IEnumerable<News> AggregationTags(string searchQuery, List<string> fieldsName, int page, TextQueryType? typeQuery)
+        {
+            var searchResponse = _elasticClient.Search<News>(s => s
+            .Query(q => q
+                    .Bool(b => b
+                        .Must(mu => mu
+                            .QueryString(qs => qs
+                                .Query(searchQuery)
+                                .Type(TextQueryType.Phrase)
+                                .DefaultOperator(Operator.And)
+                            )
+                    )
+            )));
+
+            var searchResponse2 = _elasticClient.Search<News>(s => s
+            .Query(q => q
+                    .Bool(b => b
+                        .Must(mu => mu
+                            .QueryString(qs => qs
+                                .Query(searchQuery)
+                                .Type(TextQueryType.Phrase)
+                                .DefaultOperator(Operator.And)
+                            )
+                    )
+            ))
+            .Aggregations(a => a
+                .Terms("aggLocations", ag => ag
+                    .Field(f => f.Entities.Locations))
+                .ValueCount("valueCountLocations", v => v
+                    .Field(f => f.Entities.Locations)
+                ))
+            .Aggregations(a => a
+                .Terms("aggPersons", ag => ag
+                    .Field(f => f.Entities.Persons))
+                .ValueCount("valueCountPersons", v => v
+                    .Field(f => f.Entities.Persons)
+                ))
+            .Aggregations(a => a
+                .Terms("aggOrganizations", ag => ag
+                    .Field(f => f.Entities.Organizations))
+                .ValueCount("valueCountOrganizations", v => v
+                    .Field(f => f.Entities.Organizations)
+                )));
+
+
+
+            var searchResponse3 = _elasticClient.Search<News>(s => s
+            .Query(q => q
+                    .Bool(b => b
+                        .Must(mu => mu
+                            .QueryString(qs => qs
+                                .Query(searchQuery)
+                                .Type(TextQueryType.Phrase)
+                                .DefaultOperator(Operator.And)
+                            )
+                    )
+            ))
+            .Aggregations(a => a
+                .Terms("aggOrganizations", ag => ag
+                    .Field(f => f.Entities.Organizations))));
+
+            var searchResponse4 = _elasticClient.Search<News>(s => s
+           .Aggregations(a => a
+               .Terms("aggOrganizations", ag => ag
+                   .Field(f => f.Entities.Organizations))));
+
+            var commitCount = searchResponse2.Aggregations.Terms("aggLocations");
+            var commitCount2 = searchResponse2.Aggregations.Terms("aggPersons");
+            var commitCount3 = searchResponse2.Aggregations.Terms("aggOrganizations");
+
+            var commitCount1 = searchResponse2.Aggregations.ValueCount("valueCountLocations");
+            var commitCount12 = searchResponse2.Aggregations.ValueCount("valueCountPersons");
+            var commitCount13 = searchResponse2.Aggregations.ValueCount("valueCountOrganizations");
+
+
+            var commitCount7 = searchResponse3.Aggregations.Terms("aggLocations");
+            var commitCount72 = searchResponse3.Aggregations.Terms("aggPersons");
+            var commitCount73 = searchResponse3.Aggregations.Terms("aggOrganizations");
+
+            var commitCount111 = searchResponse4.Aggregations.Terms("aggOrganizations");
+
+
+            //.Terms("Test", st => st
+            //    .Field(f => f.Entities.Locations)
+            //    .Order()));
+
+
+            //.Query(q => q
+            //.MultiMatch(mm => mm
+            //    .Fields(f => f.Fields(fieldsName.ToArray()))
+            //    .Query(searchQuery)
+            //    .AutoGenerateSynonymsPhraseQuery(true)
+            //    .Type(typeQuery)
+            //))
+            //.From((page - 1) * PageSize)
+            //.Size(PageSize));
+            return searchResponse.Documents;
+        }
     }
 }

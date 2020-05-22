@@ -10,5 +10,7 @@ namespace Backend.Services.Abstract
     {
         void AddedNewNews(string idNews);
         void AddSubscribe(string email, string subscribeQuery);
+        void RemoveSubscribe(string id);
+        Task SendConfirmationSubscribeMessage(string email, string subscribeQuery);
     }
 }

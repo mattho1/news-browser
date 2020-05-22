@@ -100,5 +100,10 @@ namespace Backend.Services.Concrete
             var idNewNews = _newsRepository.AddNews(news);
             _subscribeService.AddedNewNews(idNewNews);
         }
+
+        public IEnumerable<News> AggregationTags(string searchQuery, List<string> fieldsName, int page)
+        {
+            return _newsRepository.AggregationTags(searchQuery, fieldsName, page).ToList();
+        }
     }
 }

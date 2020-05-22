@@ -11,5 +11,6 @@ namespace Backend.Repositories.Abstract
         Subscriber Get(string email);
         List<Subscriber> GetAllSubscribers();
         void Add(Subscriber subscriber);
+        void Remove(string id);
     }
 }

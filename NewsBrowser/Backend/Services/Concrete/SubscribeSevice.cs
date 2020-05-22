@@ -15,15 +15,15 @@ namespace Backend.Services.Concrete
     public class SubscribeService : ISubscribeService
     {
         private readonly INewsRepository _newsRepository;
-        private readonly IEmailSender _emailSender;
+        private readonly IEmailService _emailService;
         private readonly ISubscribeRepository _subscribeRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public SubscribeService(INewsRepository newsRepository, ISubscribeRepository subscribeRepository, IEmailSender emailSender, IHttpContextAccessor httpContextAccessor)
+        public SubscribeService(INewsRepository newsRepository, ISubscribeRepository subscribeRepository, IEmailService emailService, IHttpContextAccessor httpContextAccessor)
         {
             _newsRepository = newsRepository;
             _subscribeRepository = subscribeRepository;
-            _emailSender = emailSender;
+            _emailService = emailService;
             _httpContextAccessor = httpContextAccessor;
         }
 
@@ -58,7 +58,24 @@ namespace Backend.Services.Concrete
 
         public void AddSubscribe(string email, string subscribeQuery)
         {
-            _subscribeRepository.Add(new Subscriber() { DateSubscribe = DateTime.Now, Email = email, Query = subscribeQuery });
+            _subscribeRepository.Add(new Subscriber() { Id = Cryptography.GetHashString(email + subscribeQuery), DateSubscribe = DateTime.Now, Email = email, Query = subscribeQuery });
+        }
+
+        public void RemoveSubscribe(string id)
+        {
+            _subscribeRepository.Remove(id);
+        }
+
+        public async Task SendConfirmationSubscribeMessage(string email, string subscribeQuery)
+        {
+            var request = _httpContextAccessor.HttpContext.Request;
+            var unsubscribeLink = new Uri(new Uri($"{request.Scheme}://{request.Host.Value}"), "unsubscribe/" + Cryptography.GetHashString(email + subscribeQuery)).ToString();
+            await _emailService.SendMessage(new EmailMessage()
+            {
+                Receiver = email,
+                Title = "New subscription",
+                Content = $"New subscription has been added to News Browser. \n\nSubscribe query: \n{subscribeQuery}\n\nIf you want to unsubscribe, click the link:\n{unsubscribeLink}"
+            });
         }
 
         private async Task SendMessageAboutNewNews(string email, string newsId)
@@ -70,7 +87,7 @@ namespace Backend.Services.Concrete
                 var message = "News has been added that matches your subscription.\n\n" + linkToNews;
                 var title = $"[NewsBrowser] - New news";
                 var emailMessage = new EmailMessage() { Receiver = email, Title = title, Content = message };
-                await _emailSender.SendEmail(emailMessage);
+                await _emailService.SendMessage(emailMessage);
             }
             catch
             {}

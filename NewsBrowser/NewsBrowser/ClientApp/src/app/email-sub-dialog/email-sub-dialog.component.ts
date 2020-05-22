@@ -27,8 +27,13 @@ export class EmailSubDialogComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<SimpleSearchComponent>,
     private http: HttpClient,
+    iconRegistry: MatIconRegistry,
+    sanitizer: DomSanitizer,
     @Inject(MAT_DIALOG_DATA) private data: string,
     @Inject('BASE_URL') private baseUrl: string) {
+    //iconRegistry.addSvgIcon(
+    //  'sendSub',
+    //  sanitizer.bypassSecurityTrustResourceUrl('assets/icons/subscriptions.svg'));
   }
 
   cancelDialog(): void {

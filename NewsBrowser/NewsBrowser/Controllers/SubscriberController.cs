@@ -28,7 +28,21 @@ namespace NewsBrowser.Controllers
             if(!string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(subscribeQuery))
             {
                 _subscribeService.AddSubscribe(email, subscribeQuery);
-                _emailService.SendConfirmationSubscribeMessage(email, subscribeQuery);
+                _subscribeService.SendConfirmationSubscribeMessage(email, subscribeQuery);
+                return Ok();
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpGet("unsubscribe", Name = "Unsubscribe")]
+        public IActionResult Unsubscripe(string subscriberId)
+        {
+            if (!string.IsNullOrEmpty(subscriberId))
+            {
+                _subscribeService.RemoveSubscribe(subscriberId);
                 return Ok();
             }
             else

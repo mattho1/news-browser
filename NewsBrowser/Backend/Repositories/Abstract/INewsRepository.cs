@@ -21,5 +21,6 @@ namespace Backend.Repositories.Abstract
 
         string CheckExistNews(string searchQuery, string idNews);
 
+        IEnumerable<News> AggregationTags(string searchQuery, List<string> fieldsName, int page, TextQueryType? typeQuery = TextQueryType.Phrase);
     }
 }

@@ -47,23 +47,47 @@ namespace Backend.Repositories.Concrete
         {
             if(!string.IsNullOrEmpty(subscriber.Query) && !string.IsNullOrEmpty(subscriber.Email))
             {
+                //var numberIdenticalSubscribes = _elasticClient.Search<Subscriber>(s => s
+                //    .Index("subscriptions")
+                //    .Query(q => q
+                //        .Bool(b => b
+                //            .Must(m => m
+                //                .MatchPhrase(t => t
+                //                    .Field(f => f.Query)
+                //                    .Query(subscriber.Query))
+                //                && m
+                //                .MatchPhrase(t => t
+                //                    .Field(f => f.Email)
+                //                    .Query(subscriber.Email)))
+                //                    )))?.Documents?.Count;
+
                 var numberIdenticalSubscribes = _elasticClient.Search<Subscriber>(s => s
-                    .Index("subscribers")
+                    .Index("subscriptions")
                     .Query(q => q
                         .Bool(b => b
                             .Must(m => m
                                 .MatchPhrase(t => t
-                                    .Field(f => f.Query)
-                                    .Query(subscriber.Query))
-                                && m
-                                .MatchPhrase(t => t
-                                    .Field(f => f.Email)
-                                    .Query(subscriber.Email)))
-                                    )))?.Documents?.Count;
+                                    .Field(f => f.Id)
+                                    .Query(subscriber.Id))))))?.Documents?.Count;
 
                 if (numberIdenticalSubscribes == null || numberIdenticalSubscribes == 0)
                     _elasticClient.Index<Subscriber>(subscriber, i => i
-                            .Index("subscribers"));
+                            .Index("subscriptions"));
+            }
+        }
+
+        public void Remove(string id)
+        {
+            if (!string.IsNullOrEmpty(id))
+            {
+                _elasticClient.DeleteByQuery<Subscriber>(s => s
+                      .Index("subscriptions")
+                          .Query(q => q
+                              .Bool(b => b
+                                  .Must(m => m
+                                      .MatchPhrase(t => t
+                                          .Field(f => f.Id)
+                                          .Query(id))))));
             }
         }
     }

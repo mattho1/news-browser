@@ -18,5 +18,7 @@ namespace Backend.Services.Abstract
 
 
         News SimpleSearchNewsTEST(string searchQuery);
+
+        IEnumerable<News> AggregationTags(string searchQuery, List<string> fieldsName, int page);
     }
 }

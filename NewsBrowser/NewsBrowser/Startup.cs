@@ -49,13 +49,13 @@ namespace NewsBrowser
 
             var esClient = new ElasticClient(esClientSettings);
 
-            var requestExistIndex = new IndexExistsRequest("subscribers");
+            var requestExistIndex = new IndexExistsRequest("subscriptions");
 
             if (!esClient.Indices.Exists(requestExistIndex).Exists)
             {
                 var settings = new IndexSettings { NumberOfReplicas = 0, NumberOfShards = 1 };
                 var indexConfig = new IndexState { Settings = settings };
-                esClient.Indices.Create("subscribers", c => c
+                esClient.Indices.Create("subscriptions", c => c
                     .InitializeUsing(indexConfig)
                     .Map<Subscriber>(mp => mp.AutoMap()));
             }
@@ -102,7 +102,7 @@ namespace NewsBrowser
                 app.UseHsts();
             }
 
-            // app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
             if (!env.IsDevelopment())
             {

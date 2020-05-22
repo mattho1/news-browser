@@ -15,6 +15,7 @@ import { NewsDetailsComponent } from './news-details/news-details.component';
 import { AdvancedSearchComponent } from './advanced-search/advanced-search.component';
 import { CombinationSearchComponent } from './combination-search/combination-search.component';
 import { EmailSubDialogComponent } from './email-sub-dialog/email-sub-dialog.component';
+import { UnsubscribeComponent } from './unsubscribe/unsubscirbe.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { EmailSubDialogComponent } from './email-sub-dialog/email-sub-dialog.com
     AdvancedSearchComponent,
     CombinationSearchComponent,
     EmailSubDialogComponent,
+    UnsubscribeComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
