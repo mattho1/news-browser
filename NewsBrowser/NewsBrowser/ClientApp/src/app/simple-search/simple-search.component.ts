@@ -36,9 +36,9 @@ export class SimpleSearchComponent implements OnInit {
     sanitizer: DomSanitizer,
     public subDialog: MatDialog,
     @Inject('BASE_URL') private baseUrl: string) {
-    //iconRegistry.addSvgIcon(
-    //  'subscriptions',
-    //  sanitizer.bypassSecurityTrustResourceUrl('assets/icons/subscriptions.svg'));
+    iconRegistry.addSvgIcon(
+      'subscriptions',
+      sanitizer.bypassSecurityTrustResourceUrl('assets/icons/alert.svg'));
   }
 
   ngOnInit() {
@@ -66,10 +66,12 @@ export class SimpleSearchComponent implements OnInit {
   }
 
   submitSearch() {
-    this.searchNews();
-    this.searchBroaderQuery();
-    this.searchNarrowerQuery();
-    this.searchRelatedQuery();
+    if (this.searchQuery.value != null && this.searchQuery.value != "") {
+      this.searchNews();
+      this.searchBroaderQuery();
+      this.searchNarrowerQuery();
+      this.searchRelatedQuery();
+    }
   }
 
   searchNews() {
@@ -128,23 +130,23 @@ export class SimpleSearchComponent implements OnInit {
   }
 
   searchRelatedQuery() {
-    this.relatedConcepts = [];
-    this.relatedConceptsFreq = {};
-    this.http.get<string[]>(this.baseUrl + 'news/relatedQuery/' + this.searchQuery.value).subscribe(result => {
-      this.relatedConcepts = result;
-      if (this.indexFreqEnabled) {        
-        let loop = (concept: string) => {
-          this.getConceptsFrequency(concept)
-          .subscribe(result => {
-            if (this.relatedConcepts.length) {
-              this.relatedConceptsFreq[concept] = result;
-              loop(this.relatedConcepts.shift());
-            }
-          });
+      this.relatedConcepts = [];
+      this.relatedConceptsFreq = {};
+      this.http.get<string[]>(this.baseUrl + 'news/relatedQuery/' + this.searchQuery.value).subscribe(result => {
+        this.relatedConcepts = result;
+        if (this.indexFreqEnabled) {
+          let loop = (concept: string) => {
+            this.getConceptsFrequency(concept)
+              .subscribe(result => {
+                if (this.relatedConcepts.length) {
+                  this.relatedConceptsFreq[concept] = result;
+                  loop(this.relatedConcepts.shift());
+                }
+              });
+          }
+          loop(this.relatedConcepts.shift());
         }
-        loop(this.relatedConcepts.shift());
-      } 
-    }, error => console.error(error));
+      }, error => console.error(error));
   }
 
   openSubscribeDialog() {

@@ -42,11 +42,11 @@ namespace Backend.Helpers
         private static List<DTOs.Tag> CreateTags(News news)
         {
             var tags = new List<DTOs.Tag>();
-            if (news == null)
+            if (news == null || news.Entities == null)
                 return tags;
 
             if(!string.IsNullOrEmpty(news?.Thread?.SiteSection))
-                tags.Add(new DTOs.Tag() { Name = news.Thread.Site, Type = 1 });
+                tags.Add(new DTOs.Tag() { Name = news.Thread.SiteSection, Type = 1 });
             
             tags.AddRange(news.Entities.Persons.Select(l => new DTOs.Tag() { Name = l.Name, Type = 2 }));
             tags.AddRange(news.Entities.Organizations.Select(l => new DTOs.Tag() { Name = l.Name, Type = 3 }));

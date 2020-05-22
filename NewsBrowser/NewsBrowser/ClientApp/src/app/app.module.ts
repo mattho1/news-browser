@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { MatButtonModule, MatInputModule, MatTableModule, MatChipsModule, MatCardModule, MatPaginatorModule, MatSelectModule, MatIconModule, MatDialogModule, MatBadgeModule } from '@angular/material';
+import { MatButtonModule, MatInputModule, MatTableModule, MatChipsModule, MatCardModule, MatPaginatorModule, MatSelectModule, MatIconModule, MatDialogModule, MatBadgeModule, MatListModule, MatGridListModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -15,7 +15,8 @@ import { NewsDetailsComponent } from './news-details/news-details.component';
 import { AdvancedSearchComponent } from './advanced-search/advanced-search.component';
 import { CombinationSearchComponent } from './combination-search/combination-search.component';
 import { EmailSubDialogComponent } from './email-sub-dialog/email-sub-dialog.component';
-import { UnsubscribeComponent } from './unsubscribe/unsubscirbe.component';
+import { UnsubscribeComponent } from './unsubscribe/unsubscribe.component';
+import { router } from './router';
 
 @NgModule({
   declarations: [
@@ -46,19 +47,10 @@ import { UnsubscribeComponent } from './unsubscribe/unsubscirbe.component';
     MatSelectModule,
     MatIconModule,
     MatDialogModule,
+    MatGridListModule,
+    MatListModule,
     BrowserAnimationsModule,
-    RouterModule.forRoot([
-      { path: '', component: SimpleSearchComponent, pathMatch: 'full' },
-      { path: 'advanced-search', component: AdvancedSearchComponent }, 
-      { path: 'advanced-search/:fieldType/:searchQuery', component: AdvancedSearchComponent },
-      { path: 'combination-search', component: CombinationSearchComponent },
-      { path: 'combination-search/:fieldType/:searchQuery', component: CombinationSearchComponent },
-      { path: 'counter', component: CounterComponent },
-      { path: 'fetch-data', component: FetchDataComponent },
-      { path: 'simple-search', component: SimpleSearchComponent },
-      { path: 'simple-search/:searchQuery', component: SimpleSearchComponent },
-      { path: 'news-details/:newsId', component: NewsDetailsComponent },
-    ])
+    RouterModule.forRoot(router)
   ],
   providers: [],
   entryComponents: [

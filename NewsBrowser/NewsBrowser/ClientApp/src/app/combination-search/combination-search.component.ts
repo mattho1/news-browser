@@ -56,6 +56,13 @@ export class CombinationSearchComponent implements OnInit {
     }, error => console.error(error));
   }
 
+  newSearch(event, query: string) {
+    this.selectedQueryType = 'exact';
+    this.selectedFieldType = 'tag';
+    this.searchQuery.setValue(query);
+    this.searchNews();
+  }
+
   fieldTypes: string[] = ['all', 'title', 'author', 'content', 'tag'];
   queryTypes: string[] = ['exact', 'fuzzy', 'synonyms'];
 

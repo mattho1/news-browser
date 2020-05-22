@@ -12,7 +12,7 @@ namespace Backend.Repositories.Concrete
     public class SubscribeRepository : ISubscribeRepository
     {
         private readonly IElasticClient _elasticClient;
-        private const int PageSize = 200;
+        private const int PageSize = 400;
 
         public SubscribeRepository(IElasticClient elasticClient)
         {
@@ -22,7 +22,7 @@ namespace Backend.Repositories.Concrete
         public Subscriber Get(string email)
         {
             var response = _elasticClient.Search<Subscriber>(s => s
-                .Index("subscribers")
+                .Index("subscriptions")
                 .Query(q => q
                     .Bool(b => b
                         .Must(mu => mu
@@ -37,7 +37,7 @@ namespace Backend.Repositories.Concrete
         public List<Subscriber> GetAllSubscribers()
         {
             var response = _elasticClient.Search<Subscriber>(c => c
-                .Index("subscribers")
+                .Index("subscriptions")
                 .Query(q => q
                     .MatchAll()));
             return response.Documents.ToList();

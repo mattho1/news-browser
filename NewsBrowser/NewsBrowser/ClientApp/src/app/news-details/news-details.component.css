@@ -1,13 +1,13 @@
 body {
 }
 
-.details-card {
+#details-card {
   margin-left: 5%;
   margin-right: 5%;
   text-align: center;
 }
 
-.tags {
+#tags {
   width: 100%;
 }
 
@@ -26,12 +26,21 @@ body {
   justify-content: center;
 }
 
+#content {
+  justify-content: space-between;
+}
+
 img {
-  max-height: 60%;
-  max-width: 60%;
+  max-height: 100%;
+  max-width: 50%;
 }
 
 a {
-  font-size: 14px;
+  font-size: 18px;
+  justify-content: center;
+}
+
+.center {
+  display: flex;
   justify-content: center;
 }

@@ -16,7 +16,7 @@ export class UnsubscribeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.subscriberId = this.route.snapshot.paramMap.get('subscriberId');
+    this.subscriberId = this.route.snapshot.paramMap.get('unsubscribeId');
     this.subscribe();
   }
 

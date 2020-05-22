@@ -7,6 +7,7 @@ using Backend.Models;
 using Backend.Services.Abstract;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using NewsBrowser.DTOs;
 
 namespace NewsBrowser.Controllers
 {
@@ -87,24 +88,28 @@ namespace NewsBrowser.Controllers
         [HttpGet("combination", Name = "CombinationSearch")]
         public IActionResult CombinationSearch(string queryType, string fieldType, string queryContent, int page = 1)
         {
-            var news = _newsService.CombinationSearch(queryType, fieldType, queryContent,  page);
+            var news = _newsService.CombinationSearch(queryType, fieldType, queryContent, page);
             return Ok(news);
         }
 
-        // TEST
-        public IEnumerable<SimpleNews> Get()
+        [HttpPost("addedNews", Name = "AddNews")]
+        public IActionResult AddNews([FromBody] NewNewsDto newNews)
         {
-            var news = _newsService.SimpleSearchNews("test", 1);
-            return news;
+            var newsId = _newsService.CreateNews(newNews.Title, newNews.Author, newNews.Site, newNews.Language, newNews.ImgUrl ?? string.Empty, newNews.Contents);
+            if (!string.IsNullOrEmpty(newsId))
+            {
+                newNews.Id = newsId;
+                return Ok(newNews);
+            }
+            else
+                return NotFound();
         }
 
         // TEST
-        [HttpGet("addedNews/{idNews}", Name = "TestAddedAndSubscribe")]
-        public IActionResult GetTest(string idNews)
+        public IEnumerable<Backend.DTOs.SimpleNews> Get()
         {
-            var news = _newsService.SimpleSearchNewsTEST(idNews);
-            _newsService.CreateNews(news);
-            return Ok();
+            var news = _newsService.SimpleSearchNews("test", 1);
+            return news;
         }
     }
 }

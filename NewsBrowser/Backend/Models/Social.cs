@@ -12,5 +12,15 @@ namespace Backend.Models
         public ReactionForm Linkedin { get; set; }
         public ReactionForm Facebook { get; set; }
         public ReactionForm Stumbledupon { get; set; }
+
+        public Social()
+        {
+            Gplus = new ReactionForm();
+            Pinterest = new ReactionForm();
+            Vk = new ReactionForm();
+            Linkedin = new ReactionForm();
+            Facebook = new ReactionForm();
+            Stumbledupon = new ReactionForm();
+        }
     }
 }

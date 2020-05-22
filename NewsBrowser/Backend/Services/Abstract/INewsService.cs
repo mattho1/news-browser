@@ -11,7 +11,7 @@ namespace Backend.Services.Abstract
     {
         NewsDetails GetNews(string newsId);
         //bool CreateNews(News news);
-        void CreateNews(News news);
+        string CreateNews(string title, string author, string site, string language, string imgUrl, string contents);
         IEnumerable<SimpleNews> SimpleSearchNews(string searchQuery, int page);
         IEnumerable<SimpleNews> SearchByField(string searchQuery, string fieldName, int page);
         IEnumerable<SimpleNews> CombinationSearch(string queryType, string fieldName, string searchQuery, int page);

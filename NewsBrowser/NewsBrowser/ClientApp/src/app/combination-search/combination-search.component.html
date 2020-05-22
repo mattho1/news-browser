@@ -53,7 +53,7 @@
       <td mat-cell *matCellDef="let element">
         <mat-form-field >
           <mat-chip-list aria-label="Color selection">
-            <mat-chip *ngFor="let tag of element.tags" [color]="chipColor(tag.type)" [routerLink]="['/combination-search/tag/', tag.name]" selected="true">
+            <mat-chip *ngFor="let tag of element.tags" [color]="chipColor(tag.type)" (click)="newSearch($event, tag.name)" selected="true">
               {{tag.name}}
             </mat-chip>
           </mat-chip-list>

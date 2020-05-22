@@ -4,12 +4,12 @@
            placeholder="Search"
            [formControl]="searchQuery" />
   </mat-form-field>
-  <button mat-raised-button color="primary">
+  <button mat-raised-button color="primary" id="search-button-content">
     Search
   </button>
-  <!--<button mat-icon-button color="primary" id="subscribe-button" (click)="openSubscribeDialog()">
+  <button mat-icon-button color="primary" id="subscribe-button" (click)="openSubscribeDialog()">
     <mat-icon svgIcon="subscriptions" color="warn" aria-hidden="false"></mat-icon>
-  </button>-->
+  </button>
 </form>
 
   <ng-container *ngIf="dataSource && indexFreqEnabled">

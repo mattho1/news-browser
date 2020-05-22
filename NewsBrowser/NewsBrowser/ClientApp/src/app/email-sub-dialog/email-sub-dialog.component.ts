@@ -29,11 +29,11 @@ export class EmailSubDialogComponent implements OnInit {
     private http: HttpClient,
     iconRegistry: MatIconRegistry,
     sanitizer: DomSanitizer,
-    @Inject(MAT_DIALOG_DATA) private data: string,
+    @Inject(MAT_DIALOG_DATA) private data: EmailDialogData,
     @Inject('BASE_URL') private baseUrl: string) {
-    //iconRegistry.addSvgIcon(
-    //  'sendSub',
-    //  sanitizer.bypassSecurityTrustResourceUrl('assets/icons/subscriptions.svg'));
+    iconRegistry.addSvgIcon(
+      'sendSub',
+      sanitizer.bypassSecurityTrustResourceUrl('assets/icons/send.svg'));
   }
 
   cancelDialog(): void {
@@ -43,7 +43,7 @@ export class EmailSubDialogComponent implements OnInit {
   subscribeQuery() {
     let params = new HttpParams();
     params = params.append('email', this.email.value);
-    params = params.append('subscribeQuery', this.data);
+    params = params.append('subscribeQuery', this.data.searchQr);
 
     this.http.get<SimpleNews[]>(this.baseUrl + 'subscriber/subscribe', { params: params }).subscribe(_ => {
       this.dialogRef.close();

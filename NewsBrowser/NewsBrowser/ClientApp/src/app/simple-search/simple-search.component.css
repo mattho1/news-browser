@@ -120,3 +120,7 @@ background-color : rgb(161, 17, 84);
 .md-button {
     border-radius: 50%;
 }
+
+#search-button-content {
+  font-size: 24px;
+}

@@ -95,10 +95,11 @@ namespace Backend.Services.Concrete
             }
         }
 
-        void INewsService.CreateNews(News news)
+        string INewsService.CreateNews(string title, string author, string site, string language, string imgUrl, string contents)
         {
-            var idNewNews = _newsRepository.AddNews(news);
+            var idNewNews = _newsRepository.AddNews(new News(title, author, site, language, imgUrl, contents));
             _subscribeService.AddedNewNews(idNewNews);
+            return idNewNews;
         }
 
         public IEnumerable<News> AggregationTags(string searchQuery, List<string> fieldsName, int page)

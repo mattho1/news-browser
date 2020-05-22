@@ -42,5 +42,22 @@ namespace Backend.Models
         /// </summary>
         [Text(Name = "site_type")]
         public string SiteType { get; set; }
+
+        public Thread() { }
+
+        public Thread(string site, string title, string imgUrl)
+        {
+            Site = site;
+            FullTitle = title;
+            SiteFullName = site;
+            SiteType = "News";
+            Country = "US";
+            Social = new Social();
+            SiteSection = site.Split('.')[0];
+            TitleSection = title;
+            ImageUrl = imgUrl;
+            Url = site;
+            SpamScore = 0;
+        }
     }
 }

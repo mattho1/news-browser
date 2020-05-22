@@ -16,5 +16,18 @@ namespace Backend.Models
         public Entity Entities { get; set; }
         public string Language { get; set; }
         public string Text { get; set; }
+        public News(){ }
+
+        public News(string title, string author, string site, string language, string imgUrl, string contents)
+        {
+            Id = Guid.NewGuid().ToString();
+            Title = title;
+            Author = author;
+            Url = site;
+            Language = language;
+            Text = contents;
+            Entities = new Entity();
+            Thread = new Thread(site, title, imgUrl);
+        }
     }
 }

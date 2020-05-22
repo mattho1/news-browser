@@ -16,5 +16,12 @@ namespace Backend.Models
 
         [Text(Name = "comments")]
         public int CommentsNumber { get; set; }
+
+        public ReactionForm()
+        {
+            SharesNumber = 0;
+            CommentsNumber = 0;
+            LikesNumber = 0;
+        }
     }
 }

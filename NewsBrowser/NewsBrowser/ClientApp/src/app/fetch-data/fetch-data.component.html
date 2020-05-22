@@ -1,20 +1,38 @@
-<h1 id="tableLabel">First five search results "test"</h1>
+<h1 mat-dialog-title id="title">Add new news</h1>
+<form [formGroup]="form" (ngSubmit)="addNews()">
+  <mat-form-field class="fields">
+    <input placeholder="Title" id="title" name="titleField" type="text" formControlName="title"
+           matInput required>
+    <mat-error *ngIf="form.get('title').invalid">{{getErrorMessageTitle()}}</mat-error>
+  </mat-form-field>
 
-<p>This component demonstrates fetching data from the index.</p>
+  <mat-form-field class="fields">
+    <input placeholder="Author" id="author" name="authorField" type="text" formControlName="author"
+           matInput required>
+    <mat-error *ngIf="form.get('author').invalid">{{getErrorMessageAuthor()}}</mat-error>
+  </mat-form-field>
 
-<p *ngIf="!newses"><em>Loading...</em></p>
+  <mat-form-field class="fields">
+    <input placeholder="Site" id="site" name="siteField" type="text" formControlName="site"
+           matInput required>
+    <mat-error *ngIf="form.get('site').invalid">{{getErrorMessageSite()}}</mat-error>
+  </mat-form-field>
 
-<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="newses">
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>Text</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let news of newses">
-      <td>{{ news.title }}</td>
-      <td>{{ news.text }}</td>
-    </tr>
-  </tbody>
-</table>
+  <mat-form-field class="fields">
+    <input placeholder="Language" id="language" name="languageField" type="text" formControlName="language"
+           matInput required>
+    <mat-error *ngIf="form.get('language').invalid">{{getErrorMessageLanguage()}}</mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="fields">
+    <input placeholder="Image Url" id="imgUrl" name="imgUrlField" type="text" formControlName="imgUrl"
+           matInput>
+  </mat-form-field>
+
+  <mat-form-field class="fields">
+    <textarea placeholder="Contents" id="contents" formControlName="contents" name="contentsField"
+              rows="10" matInput required></textarea>
+    <mat-error *ngIf="form.get('contents').invalid">{{getErrorMessageContents()}}</mat-error>
+  </mat-form-field>
+  <button [disabled]="!form.valid" mat-raised-button color="primary">Add news</button>
+</form>
