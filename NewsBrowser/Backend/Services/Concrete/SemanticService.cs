@@ -66,7 +66,14 @@ namespace Backend.Services.Concrete
 
         public int GetIndexConceptFrequency(string concept)
         {
-            return Graph.LabelsDocFreq[concept];
+            try
+            {
+                return Graph.LabelsDocFreq[concept];
+            }
+            catch
+            {
+                return 0;
+            }
         }
     }
 }
