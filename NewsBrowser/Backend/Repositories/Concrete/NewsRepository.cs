@@ -56,16 +56,11 @@ namespace Backend.Repositories.Concrete
         {
             var searchResponse = _elasticClient.Search<News>(s => s
             .Query(q => q
-                    .Bool(b => b
-                        .Must(mu => mu
-                            .QueryString(qs => qs
-                                .Query(searchQuery)
-                                .FuzzyTranspositions(true)
-                                .FuzzyPrefixLength(3)
-                                .Fuzziness(Fuzziness.EditDistance(2)
-                            )
-                    )
-            )))
+                    .Fuzzy(f => f
+                        .Name(searchQuery)
+                        .Fuzziness(Fuzziness.EditDistance(1))
+                        .Transpositions(false))
+            )
             .From((page - 1) * PageSize)
             .Size(PageSize));
             return searchResponse.Documents;
@@ -73,16 +68,13 @@ namespace Backend.Repositories.Concrete
 
         public IEnumerable<News> SynonymsSearchByAllFields(string searchQuery, int page)
         {
+            searchQuery = PrepareSynonymsQuery(searchQuery);
+
             var searchResponse = _elasticClient.Search<News>(s => s
             .Query(q => q
-                    .Bool(b => b
-                        .Must(mu => mu
-                            .QueryString(qs => qs
-                                .Query(searchQuery)
-                                .AutoGenerateSynonymsPhraseQuery(true)
-                            )
-                    )
-            ))
+                .Wildcard(r => r
+                    .Value(searchQuery))
+            )
             .From((page - 1) * PageSize)
             .Size(PageSize));
             return searchResponse.Documents;
@@ -119,12 +111,10 @@ namespace Backend.Repositories.Concrete
         {
             var searchResponse = _elasticClient.Search<News>(s => s
             .Query(q => q
-            .MultiMatch(mm => mm
-                .Fields(f => f.Fields(fieldsName.ToArray()))
-                .Query(searchQuery)
-                .FuzzyTranspositions(true)
-                .PrefixLength(3)
-                .Fuzziness(Fuzziness.EditDistance(2))
+                .MultiMatch(mm => mm
+                    .Fields(f => f.Fields(fieldsName.ToArray()))
+                    .Query(searchQuery)
+                    .Fuzziness(Fuzziness.EditDistance(1))
             ))
             .From((page - 1) * PageSize)
             .Size(PageSize));
@@ -133,14 +123,12 @@ namespace Backend.Repositories.Concrete
 
         public IEnumerable<News> SynonymsSearchByFields(string searchQuery, List<string> fieldsName, int page, TextQueryType? typeQuery)
         {
+            searchQuery = PrepareSynonymsQuery(searchQuery);
+
             var searchResponse = _elasticClient.Search<News>(s => s
             .Query(q => q
-            .MultiMatch(mm => mm
-                .Fields(f => f.Fields(fieldsName.ToArray()))
-                .Query(searchQuery)
-                .AutoGenerateSynonymsPhraseQuery(true)
-                .Type(typeQuery)
-            ))
+                .Wildcard(r => r
+                    .Value(searchQuery)))
             .From((page - 1) * PageSize)
             .Size(PageSize));
             return searchResponse.Documents;
@@ -284,6 +272,16 @@ namespace Backend.Repositories.Concrete
             //.From((page - 1) * PageSize)
             //.Size(PageSize));
             return searchResponse.Documents;
+        }
+
+        private string PrepareSynonymsQuery(string searchQuery)
+        {
+            var words = searchQuery.Split(' ').ToList();
+            searchQuery = string.Empty;
+            foreach (var word in words)
+                searchQuery += word.Substring(0, word.Length - 1) + "*" + " ";
+
+            return searchQuery.TrimEnd();
         }
     }
 }
