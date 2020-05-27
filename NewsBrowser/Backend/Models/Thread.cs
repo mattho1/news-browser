@@ -47,7 +47,7 @@ namespace Backend.Models
 
         public Thread(string site, string title, string imgUrl)
         {
-            Site = site;
+            Site = site.Split('.')[0];
             FullTitle = title;
             SiteFullName = site;
             SiteType = "News";

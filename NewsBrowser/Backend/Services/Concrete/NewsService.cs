@@ -110,11 +110,11 @@ namespace Backend.Services.Concrete
 
         private void CheckAddition(string id)
         {
-            var attempts = 30;
+            var attempts = 500;
             while (true)
             {
                 var news = _newsRepository.Get(id);
-                if (news != null || attempts-- > 0)
+                if (news != null || attempts-- < 0)
                     break;
             }
         }

@@ -45,8 +45,8 @@ namespace Backend.Helpers
             if (news == null || news.Entities == null)
                 return tags;
 
-            if(!string.IsNullOrEmpty(news?.Thread?.SiteSection))
-                tags.Add(new DTOs.Tag() { Name = news.Thread.SiteSection, Type = 1 });
+            if(!string.IsNullOrEmpty(news?.Thread?.Site))
+                tags.Add(new DTOs.Tag() { Name = news.Thread.Site.Split('.')[0], Type = 1 });
             
             tags.AddRange(news.Entities.Persons.Select(l => new DTOs.Tag() { Name = l.Name, Type = 2 }));
             tags.AddRange(news.Entities.Organizations.Select(l => new DTOs.Tag() { Name = l.Name, Type = 3 }));
