@@ -1,4 +1,7 @@
 # news-browser
+Repozytorium zawiera aplikację umożliwiającą wyszukiwanie artykułów prasowych. Aplikacja składa się z napisaną w C# (.NET core) oraz TypeScript (Angular). Aplikacja wykorzystuje silnik Elasticsearch.
+Istnieje możliwość łatwego uruchomienia aplikacji z użyciem kontenera Docker.
+
 
 # Dataset
 W celu pobrania datasetu konieczne jest zarejestrowanie się na stronie.
