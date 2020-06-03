@@ -47,13 +47,13 @@ namespace Backend.Models
 
         public Thread(string site, string title, string imgUrl)
         {
-            Site = site.Split('.')[0];
+            Site = site.Split('.')[1];
             FullTitle = title;
             SiteFullName = site;
             SiteType = "News";
             Country = "US";
             Social = new Social();
-            SiteSection = site.Split('.')[0];
+            SiteSection = site.Split('.')[1];
             TitleSection = title;
             ImageUrl = imgUrl;
             Url = site;
